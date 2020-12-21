@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:id="@+id/sharing"
+	android:visibility="visible" 
+	android:layout_gravity="bottom"
+	android:layout_height="300dip" android:background="@drawable/sendtobgwithoutheaderstripe">
+
+	<RelativeLayout android:layout_height="43dip" 
+	android:layout_width="fill_parent" 
+	android:id="@+id/homesettingheaderbar" 
+	android:background="@drawable/sendtoheaderbar">
+	<ImageView android:layout_height="30dip" 
+	android:layout_width="30dip" 
+	android:id="@+id/homesettingheaderbar" 
+	android:background="@drawable/sendtoicon"
+	android:layout_marginTop="5dip" 
+	android:layout_marginLeft="10dip"/>
+	<TextView android:layout_width="wrap_content" 
+	android:layout_height="20dip" 
+	android:id="@+id/settingtext" 
+	android:layout_marginTop="10dip" 
+	android:layout_marginLeft="45dip" android:text="Send to"
+	android:textColor="#ffffff"
+	android:textStyle="bold">
+	</TextView>
+	
+	
+<ImageView android:layout_height="25dip" 
+android:layout_width="25dip" 
+android:layout_marginLeft="434dip" 
+android:id="@+id/homesettingheadericon2" 
+android:layout_marginTop="10dip"
+android:background="@drawable/closebuttfullscreen">
+</ImageView>
+
+</RelativeLayout>
+	<RelativeLayout android:id="@+id/settingsholder"
+		android:layout_width="fill_parent" android:layout_below="@+id/homesettingheaderbar" android:layout_height="300dip">
+		
+	
+<LinearLayout android:id="@+id/facebook" 
+	android:orientation="horizontal" 
+	android:background="@drawable/itemstabnonselected" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/settingsholder" 
+	android:layout_height="62dip">
+
+	<ImageView android:id="@+id/facebookicon" 
+		android:background="@drawable/facebookicon" 
+		android:layout_width = "48dip" android:layout_height="48dip" android:layout_gravity="center_vertical" android:layout_marginLeft="20dip"/>
+
+
+	<TextView android:text="Facebook" android:textColor="#ffffff"
+		android:id="@+id/facebooktext" 
+		android:layout_height="wrap_content" 
+		android:layout_width="wrap_content"  
+		android:layout_gravity="center_vertical" android:paddingLeft="20dip"/>
+
+
+</LinearLayout>
+<LinearLayout android:id="@+id/gmail" 
+	android:orientation="horizontal" 
+	android:background="@drawable/itemstabnonselected" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/facebook" 
+	android:layout_height="62dip">
+
+	<ImageView android:id="@+id/gmailicon" 
+		android:background="@drawable/gmailicon" 
+		android:layout_width = "48dip" android:layout_height="48dip" 
+		android:layout_gravity="center_vertical" android:layout_marginLeft="20dip"/>
+
+
+	<TextView android:text="Gmail" android:textColor="#ffffff"
+		android:id="@+id/gmailtext" 
+		android:layout_height="wrap_content" 
+		android:layout_width="wrap_content"  
+		android:layout_gravity="center_vertical" android:paddingLeft="20dip"/>
+
+
+</LinearLayout>
+
+<LinearLayout android:id="@+id/storagemedia" 
+	android:orientation="horizontal" 
+	android:background="@drawable/itemstabnonselected" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/gmail" 
+	android:layout_height="62dip">
+
+	<ImageView android:id="@+id/storageicon" 
+		android:background="@drawable/storagedeviceicon" 
+		android:layout_width = "48dip" android:layout_height="48dip" 
+		android:layout_gravity="center_vertical" android:layout_marginLeft="20dip"/>
+
+
+	<TextView android:text="Storage Media (SD Card)" android:textColor="#ffffff"
+		android:id="@+id/storagetext" 
+		android:layout_height="wrap_content" 
+		android:layout_width="wrap_content"  
+		android:layout_gravity="center_vertical" android:paddingLeft="20dip"/>
+
+
+</LinearLayout>
+
+<LinearLayout android:id="@+id/notes_share" 
+	android:orientation="horizontal" 
+	android:background="@drawable/itemstabnonselected" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/storagemedia" 
+	android:layout_height="62dip">
+
+	<ImageView android:id="@+id/notesicon_share" 
+		android:background="@drawable/cascadeviewicon01" 
+		android:layout_width = "48dip" android:layout_height="48dip" 
+		android:layout_gravity="center_vertical" android:layout_marginLeft="20dip"/>
+
+
+	<TextView android:text="Notes" android:textColor="#ffffff"
+		android:id="@+id/notes_share_text" 
+		android:layout_height="wrap_content" 
+		android:layout_width="wrap_content"  
+		android:layout_gravity="center_vertical" android:paddingLeft="20dip"/>
+
+
+</LinearLayout>
+
+
+</RelativeLayout>
+
+
+</RelativeLayout>

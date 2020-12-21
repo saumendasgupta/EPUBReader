@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+	<!-- For main conatiner/ screen -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:id="@+id/note_main_container"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="@drawable/bg">
+	<!-- for header bar -->
+	<RelativeLayout android:layout_alignParentTop="true"
+		android:id="@+id/note_header" android:background="@drawable/headerbar"
+		android:layout_width="fill_parent" android:layout_height="40dip">
+		<ImageView android:id="@+id/headerhomeimage"
+			android:background="@drawable/headerhomeicon" android:layout_height="22dip"
+			android:layout_width="22dip" android:layout_marginLeft="12dip"
+			android:layout_marginTop="10dip">
+		</ImageView>
+		<TextView android:layout_width="wrap_content" android:id="@+id/note_head_text" 
+			android:layout_height="30dip" android:layout_marginLeft="35dip" 
+			android:layout_marginTop="5dip" android:textStyle="bold" android:textColor="#ffffff">
+		</TextView>
+		<ImageView android:background="@drawable/activewindowicon"
+			android:clickable="true" android:id="@+id/note_active_window"
+			android:layout_height="18dip" android:layout_width="68dip"
+
+			android:layout_marginTop="24dip" android:layout_centerHorizontal="true">
+		</ImageView>
+
+
+		<ImageView android:layout_height="22dip"
+			android:layout_width="24dip" android:layout_marginLeft="401dip"
+			android:layout_marginTop="10dip" android:background="@drawable/headerwifiicon"
+			android:id="@+id/headerwifiImage">
+		</ImageView>
+		<ImageView android:layout_width="36dip"
+			android:layout_height="20dip" android:layout_marginLeft="436dip"
+			android:layout_marginTop="10dip" android:background="@drawable/headerbatteryicon"
+			android:id="@+id/batteryIconImage">
+		</ImageView>
+
+
+		<TextView android:layout_width="wrap_content"
+			android:layout_height="30dip" android:text="06:30"
+			android:layout_marginLeft="325dip" android:id="@+id/Time"
+			android:layout_marginTop="10dip" android:textStyle="bold">
+		</TextView>
+
+	</RelativeLayout>
+
+	<RelativeLayout android:background="@drawable/headericonsstripbg"
+		android:layout_width="fill_parent" android:layout_height="47dip"
+		android:layout_below="@+id/note_header" android:id="@+id/note_menuitems_holder">
+		<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="fill_parent" android:stretchMode="columnWidth"
+			android:gravity="center" android:numColumns="8" android:scrollbars="none"
+			android:columnWidth="40dip" android:layout_height="fill_parent"
+			android:id="@+id/note_menuitems_grid"></GridView>
+
+	</RelativeLayout>
+
+	<ScrollView android:id="@+id/notescrollview"
+		android:layout_below="@id/note_menuitems_holder"
+		android:layout_height="fill_parent" android:layout_width="fill_parent">
+
+
+		<LinearLayout android:id="@+id/note_data_holder"
+			android:orientation="vertical" android:layout_width="fill_parent"
+			android:layout_below="@+id/note_menuitems_holder"
+			android:layout_height="fill_parent" android:background="@drawable/gridbg"
+			android:paddingTop="20dip" android:paddingLeft="20dip"
+			android:paddingRight="20dip" android:scrollbarStyle="insideOverlay">
+
+
+		</LinearLayout>
+	</ScrollView>
+	<RelativeLayout android:id="@+id/notezoombar"
+		android:layout_marginTop="92dip" android:layout_alignParentRight="true"
+		android:layout_height="35dip" android:layout_width="107dip">
+		<ImageView android:id="@+id/note_zoom" android:background="@drawable/zoomicon"
+			android:layout_marginLeft="17dip" android:layout_height="35dip"
+			android:layout_centerVertical="true" android:layout_width="35dip"></ImageView>
+		<ImageView android:id="@+id/note_fullscreen"
+			android:background="@drawable/fullscreenicon" android:layout_gravity="right"
+			android:layout_centerVertical="true" android:layout_height="35dip"
+			android:layout_width="35dip" android:layout_marginLeft="62dip"></ImageView>
+	</RelativeLayout>
+	<RelativeLayout android:layout_alignParentBottom="true"
+		android:layout_width="fill_parent" android:background="@drawable/footerstripe"
+		android:id="@+id/notefooter" android:layout_height="42dip">
+		<ImageView android:id="@+id/note_pagenumber_back"
+			android:background="@drawable/pagenumberbg" android:layout_height="25dip"
+			android:layout_marginLeft="18dip" android:layout_width="57dip"
+			android:layout_marginTop="10dip"></ImageView>
+		<TextView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:id="@+id/note_number"
+			android:layout_marginTop="15dip" android:textColor="#000000"
+			android:layout_marginLeft="28dip"></TextView>
+	</RelativeLayout>
+
+
+
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:id="@+id/avtivewindow"
+	android:visibility="visible" android:layout_height="870dip" 
+	android:layout_gravity="bottom" 
+	android:background="@drawable/activewindowlistviewbg">
+	
+	<GridView android:id="@+id/activewindowlist" 
+	 android:layout_height="647dip" android:layout_width="fill_parent"
+	 android:scrollbarThumbVertical="@drawable/mylibraryscroller">
+	</GridView>
+
+<ImageView android:id="@+id/closeactivewindow" 
+android:background="@drawable/activewindowdragicon" 
+android:layout_height="18dip" 
+android:layout_width="481dip"
+android:layout_marginLeft="15dip" 
+android:layout_marginTop="725dip"></ImageView>
+
+
+</RelativeLayout>

@@ -1,0 +1,930 @@
+
+package com.android.QuikE;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
+import android.util.Log;
+
+public class DataBaseClass implements BaseColumns {
+	/*
+	 * the below strings are DataBase name For Book and Tables Used in the whole
+	 * application
+	 */
+	public static final String DATABASE_NAME = "BookDataBase.db";
+	public static final String DATABASE_TABLE = "BookInfoTable";
+	public static final String RESENT_DATABASE_TABLE = "ResentBookInfoTable";
+	public static final String RECENT_NOTE_TABLE = "RecentNoteTable";
+	public static final String KEY_FILENAME = "FileName";
+	public static final String KEY_AUTHORNAME = "Author";
+	public static final String KEY_TITLE = "Title";
+	public static final String KEY_BOOKMARK = "BookMark";
+	public static final String KEY_PAGENO = "PageNo";
+	public static final String KEY_ZOOMLEVEL = "ZoomLevel";
+	public static final String KEY_XMLINDEX = "XmlIndex";
+	public static final String KEY_LINENO = "LineNo";
+	public static final String KEY_BOOKPRESENT = "BookPresent";
+
+	// Tablenames and Database name to be created
+
+	private static final String NOTE_DATABASE_TABLE = "NoteDataTable";
+	private static final String CATEGORY_TABLE = "CategoryTable";
+	private static final String ORGANIZER_HOME = "OrganizerHome";
+	private static final String ACTIVE_WINDOW = "ActiveWindowTable";
+
+	// from table OrganizerHome
+	private static final String KEY_NOTENAME = "NoteName";
+	private static final String KEY_CATEGORYID = "CategoryId";
+
+	// from table CategoryTable
+	private static final String KEY_CATEGORYNAME = "CategoryName";
+
+	// from table NoteDataTable
+	private static final String KEY_NOTEID = "NoteId";
+	private static final String KEY_DATATYPE = "Datatype";
+	private static final String KEY_TEXTDATA = "Textdata";
+	private static final String KEY_IMAGEDATA = "Imagedata";
+	
+	// from ActiveWindowTable
+	public static final String KEY_TYPE = "Type";
+	public static final String KEY_ELEMENT_NAME = "ElementName";
+	public static final String KEY_NOTE_ID = "NoteId";
+	
+	// Initial count of the category when the system is booted up 
+	private static final int INITIAL_CATEGORY_COUNT = 5;
+	
+
+	public SQLiteDatabase mDatab = null;
+	public SQLiteDatabase mForRecentTable = null;
+	public DatabaseHelper mDatah;
+	
+	
+	private boolean opened = false;
+
+	public class DatabaseHelper extends SQLiteOpenHelper {
+		// to create DATABASE
+		DatabaseHelper(Context context) {
+			super(context, DATABASE_NAME, null, 1);
+
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+
+		}
+	}
+
+	public DataBaseClass(Context context) {
+		mDatah = new DatabaseHelper(context);
+		mDatah.getWritableDatabase();
+
+	}
+
+	/* This Function will get author and book name from the Database */
+	public Cursor returnCursor() {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorForSelect = mDatab.rawQuery("SELECT _id,Author,Title FROM " + DATABASE_TABLE + " ;", null);
+		return mCursorForSelect;
+	}
+
+	/*
+	 * This Function will check if any book is deleted from the database and
+	 * then delete that book from Database
+	 */
+	public Cursor ReturnCursorForDelete() {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorForDelete = mDatab.rawQuery("DELETE FROM "
+				+ DATABASE_TABLE + " WHERE " + KEY_BOOKPRESENT + " =0;", null);
+		return mCursorForDelete;
+
+	}
+
+	/*
+	 * after deleteing the deleted books info from database this function will
+	 * update the database
+	 */
+	public void UpdateBookPresent() {
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("UPDATE  " + DATABASE_TABLE + " SET BookPresent=0;");
+
+	}
+
+	/* This Function will quary for a specific position books title and author */
+	public Cursor returnCursorForSpecificPos() {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorForSelect = mDatab.rawQuery("SELECT _id,FileName,Author,Title FROM " + DATABASE_TABLE+ "  ;", null);
+		return mCursorForSelect;
+	}
+
+	/*
+	 * If any books open from home page or from Library then this function will
+	 * entry that in RecentBook Table also
+	 */
+	public void recentBookOpendInsert(String mFilePath,
+			String mExtractedAuthor, String mExtractedTitle) {
+		int mFlag = 0;
+		
+		mFilePath = filterString(mFilePath);
+		mExtractedAuthor = filterString(mExtractedAuthor);
+		mExtractedTitle = filterString(mExtractedTitle);
+		
+		mForRecentTable = mDatah.getWritableDatabase();
+		Cursor mCursorForSelect = mDatab.rawQuery("SELECT * FROM "
+				+ RESENT_DATABASE_TABLE + "  ;", null);
+		int mCheck = mCursorForSelect.getCount();
+
+		if (mCheck < 3) {
+			mCheck++;
+			try {
+				mForRecentTable.execSQL("INSERT INTO " + RESENT_DATABASE_TABLE
+						+ " (FileName,Author,Title,LastUsed) VALUES ( '"
+						+ mFilePath + "' , ' " + mExtractedAuthor + " ', '"
+						+ mExtractedTitle + " '," + mCheck + " );");
+			} catch (SQLException e) {
+
+			}
+		} else {
+			mForRecentTable.execSQL("UPDATE " + RESENT_DATABASE_TABLE
+					+ " SET LastUsed=LastUsed-1;");
+			try {
+				Cursor mCursorForCheck = mDatab.rawQuery("SELECT * FROM "
+						+ RESENT_DATABASE_TABLE + " where  FileName='"
+						+ mFilePath + "';", null);
+				int mcount = mCursorForCheck.getCount();
+				if (!(mcount > 0)) {
+					try {
+						mForRecentTable.execSQL("UPDATE "
+								+ RESENT_DATABASE_TABLE + " SET FileName= '"
+								+ mFilePath + "',Author= ' " + mExtractedAuthor
+								+ " ',Title= ' " + mExtractedTitle
+								+ " ',LastUsed = 3 WHERE LastUsed= 0 ;");
+					} catch (Exception e) {
+						Log.e("MAK", "MAK" + e);
+					}
+				}
+
+				// mForRecentTable.execSQL("UPDATE "+RESENT_DATABASE_TABLE+" SET
+				// LastUsed = 3 WHERE FileName = '"+mFilePath+"';");
+				mForRecentTable.execSQL("UPDATE " + RESENT_DATABASE_TABLE
+						+ " SET LastUsed = 3 WHERE LastUsed = 0;");
+				// mForRecentTable.execSQL("UPDATE "+RESENT_DATABASE_TABLE+" SET
+				// LastUsed = 1 WHERE LastUsed= 0;");
+
+			} catch (SQLException e) {
+
+			}
+		}
+
+		mCursorForSelect.close();
+
+	}
+
+	/* this function will retrive the Book title from the recent book table */
+	public Cursor recentBookOpendRetrive() {
+		mForRecentTable = mDatah.getReadableDatabase();
+
+		Cursor mCursorForSelectRecentBook = mDatab.rawQuery("SELECT * FROM "+ RESENT_DATABASE_TABLE + " ORDER BY LastUsed DESC;", null);
+
+		return mCursorForSelectRecentBook;
+
+	}
+
+	/*
+	 * If any book is in Recent Book Table but that book is already deleted or
+	 * not
+	 */
+	public Cursor returnCursorForBookAvail(String BookPath) {
+		mDatab = mDatah.getReadableDatabase();
+
+		BookPath = filterString(BookPath);
+		
+		Cursor mCursorForBookAvail = mDatab.rawQuery("SELECT * FROM "+ DATABASE_TABLE + " where FileName= '" + BookPath + "' ;",
+				null);
+		int x = mCursorForBookAvail.getCount();
+		return mCursorForBookAvail;
+	}
+
+	/*
+	 * this function will extract the content from book to database and store it
+	 * CabinetInfoTable
+	 */
+	public void insertExtractedData(int mTime, String mExtractedData) {
+		mDatab = mDatah.getWritableDatabase();
+	
+		String NewString  = filterString(mExtractedData);
+		
+		mDatab
+				.execSQL("INSERT INTO CabinetInfoTable (TextData,DateField,isChecked) values ( '"
+						+ NewString + "', " + mTime + ",0 );");
+
+	}
+
+	/*
+	 * this function will select all from CabinetInfoTable and return the cursor
+	 * from cabinet table
+	 */
+	public Cursor returnCursorForCabinet() {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorForSelect = mDatab.rawQuery(
+				"SELECT * FROM CabinetInfoTable ;", null);
+		return mCursorForSelect;
+	}
+
+	/* this function will insert the open book in Active window table */
+	public void insertInActiveWindow(String mElementName, String mFilePath,
+			String mType) {
+		mDatab = mDatah.getReadableDatabase();
+		
+		mFilePath = filterString(mFilePath);
+		mElementName = filterString(mElementName);
+		mType = filterString(mType);
+		
+		mDatab
+				.execSQL("INSERT INTO ActiveWindowTable (ElementName,FilePath,Type) values ('"
+						+ mElementName
+						+ "','"
+						+ mFilePath
+						+ "', '"
+						+ mType
+						+ "');");
+	}
+
+	/*
+	 * this two function is used to check first if any book is already in active
+	 * window
+	 */
+	public void updateActiveWindow(String mElementName, String mFilePath) {
+		mDatab = mDatah.getReadableDatabase();
+		
+		mFilePath = filterString(mFilePath);
+		mElementName = filterString(mElementName);
+		
+		mDatab.execSQL("UPDATE ActiveWindowTable set ElementName='"	+ mElementName + "' ,FilePath='" + mFilePath+ "' where Type='Book';");
+	}
+
+	public Cursor bookPresentInActiveTable() {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorForSelect = mDatab.rawQuery("SELECT ElementName FROM ActiveWindowTable WHERE Type='Book';",
+				null);
+		return mCursorForSelect;
+
+	}
+
+	/* to select all from data from Active Window Table */
+	public Cursor selectAllFromActiveWindow() {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorForSelect = mDatab.rawQuery("SELECT * FROM ActiveWindowTable ;", null);
+		return mCursorForSelect;
+	}
+
+	/* to slelet last NoteId from ActiveWindow table */
+	public Cursor selectLastNoteIdFromActiveWindow() {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorForSelect = mDatab
+				.rawQuery("SELECT NoteId FROM ActiveWindowTable where Type='Note';",
+						null);
+		return mCursorForSelect;
+	}
+
+	/* to select which is clicked from active window,if it is a book or a note */
+	public Cursor selectTypeActiveWindow(String mElement) {
+		mDatab = mDatah.getReadableDatabase();
+		
+		mElement = filterString(mElement);
+		
+		Cursor mCursorForSelect = mDatab.rawQuery(
+				"SELECT Type,FilePath,NoteId FROM ActiveWindowTable WHERE ElementName='"
+						+ mElement + "';", null);
+		return mCursorForSelect;
+	}
+
+	/* to delete a specific item from active window */
+	public void deleteSpecificActivity(String mPosition) {
+		mDatab = mDatah.getReadableDatabase();
+
+		mDatab.execSQL("DELETE FROM ActiveWindowTable where ElementName= '"
+				+ mPosition + "';");
+
+	}
+
+	public int insertInNoteTable(String mExtractedText) {
+		int mFlag;
+		mDatab = mDatah.getReadableDatabase();
+
+		mExtractedText  = filterString(mExtractedText);
+		
+		Cursor mDataPresent = mDatab.rawQuery(
+				"SELECT * FROM OrganizerHome where NoteName='" + mExtractedText
+						+ ".note' and CategoryId=1;", null);
+		if (mDataPresent.getCount() > 0) {
+			mFlag = 0;
+		} else {
+			
+			
+			
+			
+			mDatab
+					.execSQL("INSERT INTO OrganizerHome (NoteName,CategoryId) values ('"
+							+ mExtractedText + ".note" + "',1);");
+			Cursor mLastNoteId = mDatab.rawQuery(
+					"Select _id from OrganizerHome where NoteName='"
+							+ mExtractedText + ".note';", null);
+			mLastNoteId.moveToFirst();
+			int mLastNoteNo = mLastNoteId.getInt(0);
+			Cursor mInsertCursor = mDatab.rawQuery(
+					"Select TextData from CabinetInfoTable where isChecked=1",
+					null);
+			mInsertCursor.moveToFirst();
+
+			for (int i = 0; i < mInsertCursor.getCount(); i++) {
+				// ----------------------------------------------
+				
+				mDatab = mDatah.getWritableDatabase();
+				String NewString=mInsertCursor.getString(0);
+				NewString  = filterString(NewString);
+				mDatab
+						.execSQL("INSERT INTO NoteDataTable (NoteId,Datatype,Textdata) values ("
+								+ mLastNoteNo + ",'text','" + NewString + "');");
+				mInsertCursor.moveToNext();
+			}
+
+			mFlag = 1;
+		}
+		return mFlag;
+	}
+
+	/*
+	 * this function select the text present in a particular note and will
+	 * return the cursor from Organizer table
+	 */
+	public Cursor returnCursorForOrganizer(int mNoteId) {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorForSelect = mDatab.rawQuery("SELECT Textdata FROM NoteDataTable where NoteId=" + mNoteId
+						+ ";", null);
+		return mCursorForSelect;
+	}
+
+	/* when save a new note this function will return the NoteName */
+	public Cursor returnTextForOrganizer(int mNoteId) {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorForSelect = mDatab
+				.rawQuery("SELECT NoteName FROM OrganizerHome where _id="+ mNoteId + ";", null);
+		return mCursorForSelect;
+	}
+
+	/*
+	 * after saving some text from cabinet to note this function will update the
+	 * cabinet table
+	 */
+	public void updateCabinetTableAfterSave() {
+		mDatab = mDatah.getReadableDatabase();
+		/* code to be added to add in NoteTable */
+		mDatab.execSQL("DELETE FROM CabinetInfoTable where isChecked=1;");
+		// update the cabinet page after data inserted in mynote
+		Cursor mCursor = mDatab.rawQuery("select _id from CabinetInfoTable ;",
+				null);
+		mCursor.moveToFirst();
+		for (int i = 1; i <= mCursor.getCount(); i++) {
+			int mTemp = mCursor.getInt(0);
+			mDatab.execSQL("UPDATE CabinetInfoTable SET _id=" + i
+					+ " WHERE _id=" + mTemp + " ;");
+			mCursor.moveToNext();
+
+		}
+	}
+
+	/* drop the index table when it is needed */
+	public void dropIndexTable() {
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("DROP TABLE IF EXISTS " + QuikE.INDEX_TABLE + " ;");
+	}
+
+	/* this function will delete saved note from cabinet */
+	public void deleteFromCabinetAfterSave() {
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("DELETE FROM CabinetInfoTable where isChecked=1");
+
+	}
+
+	/* this function will create all the table at the start of the application */
+	public void createAllTable() {
+		mDatab = mDatah.getReadableDatabase();
+		mDatab
+				.execSQL("CREATE TABLE IF NOT EXISTS ThemeIDTable ( ThemeID VARCHAR) ;");
+		// create BookInfoTable
+		mDatab
+				.execSQL("CREATE TABLE IF NOT EXISTS BookInfoTable ( _id integer PRIMARY KEY , FileName VARCHAR UNIQUE , Author VARCHAR, "
+						+ "Title VARCHAR,ChapterNo INT(4), BookMark VARCHAR,PageNo INT(10),"
+						+ " ZoomLevel INT(10), XmlLevel VARCHAR, LineNo INI(10), BookPresent INT(2),"
+						+ "BookId INT(4) );");
+		// create Cabinet Table
+		mDatab
+				.execSQL("create table if not exists ResentBookInfoTable (_id integer PRIMARY KEY ,FileName VARCHAR UNIQUE, Author VARCHAR , "
+						+ "Title VARCHAR, LastUsed INT );");
+		mDatab
+				.execSQL("create table if not exists CabinetInfoTable (_id integer primary key,DataType VARCHAR, TextData VARCHAR,DateField DATE, isChecked INT);");
+		mDatab
+				.execSQL("CREATE TABLE IF NOT EXISTS IndexTable (PageNo INT,ChapterNo INT,XmlLevel VARCHAR,LineNo INT,ZoomLevel FLOAT);");
+
+		// create ActiveWindow table
+		try{
+		mDatab
+				.execSQL("CREATE TABLE IF NOT EXISTS ActiveWindowTable (ElementName VARCHAR,NoteId INT,FilePath VARCHAR,Type VARCHAR);");
+ 
+		}catch(SQLException e)
+		{
+			
+		}
+		// Creating table in database table name - RecentNoteTable
+		mDatab
+				.execSQL("create table if not exists RecentNoteTable (NoteId INT UNIQUE, NoteName VARCHAR, Position INT);");
+
+		// Creating table in database table name - Organizer_home
+		mDatab.execSQL("create table if not exists " + ORGANIZER_HOME
+				+ "(_id integer primary key, " + KEY_NOTENAME + " VARCHAR , "
+				+ KEY_CATEGORYID + " INT );");
+
+		// Creating table in database table name - CategoryTable
+		mDatab.execSQL("create table if not exists " + CATEGORY_TABLE
+				+ "(_id integer primary key," + KEY_CATEGORYNAME
+				+ " VARCHAR );");
+
+		// Creating table in database table name - NoteDataTable
+		mDatab.execSQL("create table if not exists " + NOTE_DATABASE_TABLE
+				+ " (_id integer primary key," + KEY_NOTEID + " INT , "
+				+ KEY_DATATYPE + " VARCHAR ," + KEY_TEXTDATA + " VARCHAR ,"
+				+ KEY_IMAGEDATA + " blob );");
+
+	}
+
+	/*
+	 * this function will return the theme id from theme table and application
+	 * will start with that preselected theme
+	 */
+	public Cursor returnThemeId() {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursor = mDatab.rawQuery("SELECT ThemeID FROM ThemeIDTable ThemeID;", null);
+		return mCursor;
+	}
+
+	/*
+	 * this function will insert default theme as 0 i.e first theme as default
+	 * if no theme is selected
+	 */
+	public void insertThemeId() {
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("INSERT INTO ThemeIDTable (ThemeID) VALUES ('0');");
+	}
+
+	/* this function will insert the extracted data from book to note */
+	public void insertNoteDataInNoteTable(int mLastNoteId, String noteData) {
+
+
+		mDatab = mDatah.getReadableDatabase();
+		
+		String NewString  = filterString(noteData);
+		
+		mDatab
+				.execSQL("INSERT INTO NoteDataTable (NoteId,Datatype,Textdata) values ("
+						+ mLastNoteId + ",'text','" + NewString + "');");
+
+	}
+
+	/* this function will get the recent note data */
+	public Cursor recentNoteOpendRetrive() {
+		mForRecentTable = mDatah.getReadableDatabase();
+
+		Cursor mCursorForSelectRecentNote = mDatab.rawQuery("SELECT * FROM "+ RECENT_NOTE_TABLE + " ORDER BY Position DESC;", null);
+
+		return mCursorForSelectRecentNote;
+
+	}
+
+	/* Method to delete the content after the text is dragged to Note */
+	public void deleteAfterDragToNote(int mDeletePosition) {
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("DELETE FROM CabinetInfoTable WHERE _id ="+ mDeletePosition + ";");
+		// update the cabinet page after data inserted in mynote
+		Cursor mCursor = mDatab.rawQuery("select _id from CabinetInfoTable ;",null);
+		mCursor.moveToFirst();
+		for (int i = 1; i <= mCursor.getCount(); i++) {
+			int mTemp = mCursor.getInt(0);
+			mDatab.execSQL("UPDATE CabinetInfoTable SET _id=" + i+ " WHERE _id=" + mTemp + " ;");
+			mCursor.moveToNext();
+
+		}
+
+	}
+
+	/*
+	 * this function will be usefull to show cabinet checkbox when it will
+	 * refresh
+	 */
+	public Cursor isCheckedInCabinet(int position) {
+		mDatab = mDatah.getReadableDatabase();
+		position++;
+		Cursor mCursorIsSelected = mDatab.rawQuery(
+				"SELECT isChecked from CabinetInfoTable where _id=" + position
+						+ ";", null);
+		return mCursorIsSelected;
+	}
+
+	/* Method to insert data into note table */
+	public int insertInNoteTableFromRadial(String mExtractedText, String noteData) {
+		int mFlag;
+		mDatab = mDatah.getReadableDatabase();
+		
+		mExtractedText = filterString(mExtractedText);
+		
+		Cursor mDataPresent = mDatab.rawQuery(
+				"SELECT * FROM OrganizerHome where NoteName='" + mExtractedText
+						+ "' and CategoryId=1;", null);
+		if (mDataPresent.getCount() > 0) {
+			mFlag = 0;
+		} else {
+			
+			mDatab
+					.execSQL("INSERT INTO OrganizerHome (NoteName,CategoryId) values ('"
+							+ mExtractedText + ".note" + "',1);");
+			Cursor mLastNoteId = mDatab.rawQuery(
+					"Select _id from OrganizerHome where NoteName='"
+							+ mExtractedText + ".note';", null);
+			mLastNoteId.moveToFirst();
+			int mLastNoteNo = mLastNoteId.getInt(0);
+
+			noteData = filterString(noteData);
+			
+			mDatab
+					.execSQL("INSERT INTO NoteDataTable (NoteId,Datatype,Textdata) values ("
+							+ mLastNoteNo + ",'text','" + noteData + "');");
+
+			mFlag = 1;
+		}
+		return mFlag;
+	}
+
+	/*
+	 * this function will delete the activewindow and indextable whem applicatio
+	 * destroy
+	 */
+	public void dropTables() {
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("DROP TABLE IF EXISTS ActiveWindowTable");
+		mDatab.execSQL("DROP TABLE IF EXISTS IndexTable");
+	}
+
+	/* to check atleast one element is checked in cabinet for save as */
+	public Cursor selectCheckedAllFromCabinet() {
+		mDatab = mDatah.getReadableDatabase();
+
+		Cursor mCursorForisChecked = mDatab.rawQuery("SELECT * FROM CabinetInfoTable where isChecked=1;", null);
+
+		return mCursorForisChecked;
+	}
+	/*this function will check the selected theme id*/
+	public Cursor selectThemeId(){
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorForTheme=mDatab.rawQuery("Select ThemeId from ThemeIDTable ;",null);
+		return mCursorForTheme;
+	}
+	/*after changing the theme this function will update the theme in database*/
+	public void updateThemeId(int position){
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("UPDATE ThemeIDTable SET ThemeID=" + position + ";");
+	}
+	
+	
+	/*
+	 *  The data base operation functions for the whole organizer logic .....
+	 */
+	public Cursor returnAllFromOrganizeHome() {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCategoryCursor = mDatab.rawQuery("SELECT * FROM " + ORGANIZER_HOME + " ;", null);
+
+		return mCategoryCursor;
+	}
+	
+	// database function for fetching all category name 
+	public Cursor returnAllCategoryName()
+	{
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCategoryCursor = mDatab.rawQuery("SELECT CategoryName FROM "+ CATEGORY_TABLE + ";", null);
+		return mCategoryCursor;
+	}
+	
+	// // database function for returning category id based on its name
+	public Cursor returnCategoryName(String mSelectedCategory)
+	{
+		mDatab = mDatah.getReadableDatabase();
+		
+		mSelectedCategory = filterString(mSelectedCategory);
+		
+		Cursor mTempCursor = mDatab.rawQuery("SELECT _id FROM CategoryTable WHERE CategoryName = '"+ mSelectedCategory + "';", null);
+		return mTempCursor;
+	}
+	
+	// database function for returning all note ids from the OrganizerHOmeTable
+	public Cursor returnAllNoteId()
+	{
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mLastNoteCursor = mDatab.rawQuery("SELECT _id FROM "+ ORGANIZER_HOME + ";", null);
+		return mLastNoteCursor;
+	}
+	
+	
+	// database function for inserting into organizer home table 
+	public void insertIntoOrganizerHome(String mNoteDefaultName, int mLastNoteId, int mCategoryDefaultId) {
+		mDatab = mDatah.getReadableDatabase();
+		
+		mNoteDefaultName = filterString(mNoteDefaultName);
+		
+		mDatab.execSQL("INSERT INTO " + ORGANIZER_HOME + "("+ KEY_NOTENAME + "," + KEY_CATEGORYID + ") VALUES ( '"+ mNoteDefaultName + mLastNoteId + ".note','"+ mCategoryDefaultId + "');");
+	}
+	
+	// database function for selecting all note based on a particular category
+	public Cursor selectAllFromOrganizerOnCategory(int mSelectedCategoryId)
+	{
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCascadeViewCursor = mDatab.rawQuery("SELECT * FROM "+ ORGANIZER_HOME + " WHERE CategoryId="+ mSelectedCategoryId + ";", null);
+		return mCascadeViewCursor;
+	}
+	
+	// // database function for checking note present in active window table
+	public Cursor notePresentInActiveTable() {
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mActiveNoteCursor = mDatab.rawQuery("SELECT ElementName FROM ActiveWindowTable WHERE Type='Note';",null);
+		return mActiveNoteCursor;
+
+	}
+	
+	// // database function for inserting entry in active window table
+	public void insertNoteInActiveTable(String tempNoteName, int mSelectedNoteId)
+	{
+		mDatab = mDatah.getReadableDatabase();
+		
+		tempNoteName = filterString(tempNoteName);
+		
+		mDatab.execSQL("INSERT INTO " + ACTIVE_WINDOW + " ("+ KEY_ELEMENT_NAME + ", " + KEY_NOTE_ID + ", "
+				+ KEY_TYPE + ") values ('" + tempNoteName + "',"
+				+ mSelectedNoteId + ",'Note');");
+	}
+	
+	
+	// database function for updating note entry in active window table
+	public void updateNoteInActiveTable(String tempNoteName, int mSelectedNoteId)
+	{
+		tempNoteName = filterString(tempNoteName);
+		
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("UPDATE ActiveWindowTable SET "
+				+ KEY_ELEMENT_NAME + " = '" + tempNoteName + "', "
+				+ KEY_NOTE_ID + " = " + mSelectedNoteId + " WHERE "
+				+ KEY_TYPE + " = 'Note';");
+	}
+	
+	// database function for inserting data into recent note table 
+	
+	public void insertInRecentNoteTable(int selectedNoteId,String tempNoteName,int mRecentNoteCount)
+	{
+		mDatab = mDatah.getReadableDatabase();
+		
+		tempNoteName = filterString(tempNoteName);
+		
+		mDatab.execSQL("INSERT INTO " + RECENT_NOTE_TABLE+ " (NoteId, NoteName,Position) VALUES ( '"+ selectedNoteId + "' , ' " + tempNoteName + " ',"+ mRecentNoteCount + " );");
+	}
+	
+	// database function for selecting note from recent note table
+	public Cursor selectFromRecentNote(String tempNoteName) { 
+		
+		tempNoteName = filterString(tempNoteName);
+		
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mRecentNoteCursor = mDatab.rawQuery("SELECT * FROM "+ RECENT_NOTE_TABLE + " where  NoteName='"	+ tempNoteName + "';", null);
+		return mRecentNoteCursor;
+
+	}
+	
+	// database function for updating the data in recent note table
+	public void updateDataRecentNoteTable(int selectedNoteId,String tempNoteName)
+	{
+		mDatab = mDatah.getReadableDatabase();
+		
+		tempNoteName = filterString(tempNoteName);
+		
+		mDatab.execSQL("UPDATE " + RECENT_NOTE_TABLE
+				+ " SET NoteId= " + selectedNoteId
+				+ ",NoteName= ' " + tempNoteName
+				+ "',Position = 3 WHERE Position = 0 ;");
+	}
+	
+	// database function for updating the recent note table 
+	public void updateRecentNoteTable()
+	{
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("UPDATE " + RECENT_NOTE_TABLE+ " SET Position=Position-1;");
+	}
+	
+	
+	// database function for updating the recent note table by checking the position 
+	public void updateRecentNoteTableCheck()
+	{
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("UPDATE " + RECENT_NOTE_TABLE+ " SET Position = 3 WHERE Position = 0;");
+	}
+	
+	
+	// database function for updating the category in the OrganizerHOme tABLE
+	public void updateOrganizerHomeCategory(int mCurrentCategortyId, int mCurrentNoteId) 
+	{
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("UPDATE  " + ORGANIZER_HOME+ " SET CategoryId = " + mCurrentCategortyId + " WHERE _id = " + mCurrentNoteId + " ;");
+	}
+	
+	// database function for inserting the data into the note data table
+	public void insertIntoNoteDataTable(int mCurrentNoteId,String mDefaultDataType, String mTextDataString) {
+		mDatab = mDatah.getReadableDatabase();
+		
+		mTextDataString = filterString(mTextDataString);
+		mDefaultDataType = filterString(mDefaultDataType);
+		
+		mDatab.execSQL("INSERT INTO " + NOTE_DATABASE_TABLE + "("+ KEY_NOTEID + "," + KEY_DATATYPE + "," + KEY_TEXTDATA
+				+ ") VALUES ( " + mCurrentNoteId + ",'"
+				+ mDefaultDataType + "','" + mTextDataString + "');");	
+		}
+
+	// database function for fetching the note data based on note id ...
+	public Cursor getNoteData(int mCurrentNoteId) { 
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mGetNoteDataCursor = mDatab.rawQuery("SELECT _id," + KEY_TEXTDATA+ " from " + NOTE_DATABASE_TABLE + " WHERE " + KEY_NOTEID+ " = " + mCurrentNoteId + " AND " + KEY_DATATYPE
+				+ " = 'text';", null);
+		return mGetNoteDataCursor;
+
+	}
+	
+	// database function for inserting the new category in the category table 
+	
+	public void insertIntoCategoryTable(String mNewCategoryName)
+	{
+		mDatab = mDatah.getReadableDatabase();
+		
+		mNewCategoryName = filterString(mNewCategoryName);
+		
+		mDatab.execSQL("INSERT INTO " + CATEGORY_TABLE + "(" 	+ KEY_CATEGORYNAME + ") VALUES ( '" + mNewCategoryName	+ "');");	
+		
+	}
+	
+	// database function for updating the cabinet info table
+	public void updateCabinetTable()
+	{
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("UPDATE CabinetInfoTable set isChecked=0");
+	}
+	
+	
+	
+	// this method is for returning the notes names for scrolling
+	public Cursor returnNoteNameForScrolling(int smFrontNoteNumber) {
+		// TODO Auto-generated method stub
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCategoryCursor = mDatab.rawQuery("SELECT * FROM "	+ ORGANIZER_HOME + " WHERE _id >=" + smFrontNoteNumber+ ";", null);
+		return mCategoryCursor;
+	}
+	
+	
+	
+	
+	
+	
+	
+	// this method is for inserting the initial predefined categories in the
+	// category table
+	public int insertInitialCategories() {
+		mDatab = mDatah.getReadableDatabase();
+
+		try {
+			mDatab.execSQL(" INSERT INTO " + CATEGORY_TABLE + " ("
+
+			+ KEY_CATEGORYNAME + ") VALUES ('All Notes');");
+			mDatab.execSQL(" INSERT INTO " + CATEGORY_TABLE + " ("
+					+ KEY_CATEGORYNAME + ") VALUES ('Food');");
+			mDatab.execSQL(" INSERT INTO " + CATEGORY_TABLE + " ("
+					+ KEY_CATEGORYNAME + ") VALUES ('Travel');");
+			mDatab.execSQL(" INSERT INTO " + CATEGORY_TABLE + " ("
+					+ KEY_CATEGORYNAME + ") VALUES ('Projects');");
+			mDatab.execSQL(" INSERT INTO " + CATEGORY_TABLE + " ("
+					+ KEY_CATEGORYNAME + ") VALUES ('Music');"); 
+			// TODO Auto-generated method stub
+		} catch (SQLException e) {
+
+		}
+		return INITIAL_CATEGORY_COUNT;
+	}
+	
+	
+	
+	/*functions added fro QuikE class*/
+	public void insertInBookDataBase(String fileName,String AuthorName,String BookTitle,int BookId){
+		mDatab = mDatah.getReadableDatabase();
+		
+		BookTitle = filterString(BookTitle);
+		AuthorName = filterString(AuthorName);
+		fileName = filterString(fileName);
+		
+		try{
+		mDatab.execSQL(" INSERT INTO BookInfoTable (FileName , Author,Title,BookPresent,BookId) VALUES ( '/sdcard/"+ fileName+ "', '"+AuthorName+ "', '"+BookTitle+ "', '1'," + BookId+ " )  ;");
+		}
+		catch(SQLException e)
+		{}
+	}
+	public Cursor searchASpecificBook(String mTemp)
+	{
+		mTemp = filterString(mTemp);
+		
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mCursorSearch = null;
+		try{
+		 mCursorSearch=mDatab.rawQuery("SELECT * from BookInfoTable where FileName='"+mTemp +"';", null);
+		}
+		catch(SQLException e){}
+		return mCursorSearch;
+	}
+	
+	public void updateInBookDataBase(String mTemp){
+		mDatab = mDatah.getReadableDatabase();
+		
+		mTemp = filterString(mTemp);
+		
+		try{
+		mDatab.execSQL("UPDATE BookInfoTable SET BookPresent='1' WHERE FileName='"+ mTemp + "';");
+		}
+		catch(SQLException e){}
+		}
+	
+	public void deleteInBookDataBase(){
+		mDatab = mDatah.getReadableDatabase();
+		try {
+			/*if any book is not present in the database then delete that book*/
+			mDatab.execSQL("DELETE FROM BookInfoTable WHERE BookPresent =0;");
+		} catch (SQLException e) {
+
+		}
+		
+	}
+	public Cursor selectBookFromActiveWindow(){
+		mDatab = mDatah.getReadableDatabase();
+		Cursor mActiveWindowCursor = mDatab.rawQuery(
+				"SELECT ElementName FROM " + ACTIVE_WINDOW
+						+ " WHERE Type='Book';", null);
+		return mActiveWindowCursor;
+		
+	} 
+	public void updateIsCheckedInCabinetToSet(int mPosition){
+		mDatab = mDatah.getReadableDatabase();
+		mPosition++;
+		mDatab.execSQL("UPDATE CabinetInfoTable set isChecked=1 where _id="
+				+ mPosition
+				+ " and isChecked=0;");
+	}
+	public void updateIsCheckedInCabinetToUnSet(int mPosition){
+		mDatab = mDatah.getReadableDatabase();
+		mDatab.execSQL("UPDATE CabinetInfoTable set isChecked=0 where _id="+ (mPosition + 1)+ " and isChecked=1;");
+		
+	}
+	
+	public Cursor selectTextDataFromCabinet(int position){
+		mDatab = mDatah.getReadableDatabase();
+		position++;
+		Cursor mGetText=mDatab.rawQuery("SELECT TextData FROM CabinetInfoTable where _id=" + position + " ;", null);
+		return mGetText;
+		
+	}
+	
+	// This method is for filtering the data ... removing "'"
+	public String filterString(String mExtractedData)
+	{
+		String tempString[];
+		String NewString;
+		mDatab = mDatah.getWritableDatabase();
+		tempString = mExtractedData.split("'");
+		int i = 1;
+		int mak = tempString.length;
+		NewString = tempString[0];
+		while (tempString.length > i) {
+
+			NewString += "''" + tempString[i];
+			i++;
+		}
+
+		return NewString;
+		
+	}
+	
+	
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/linlayoutforcheckbox"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+>
+
+
+
+<ImageView android:layout_width="wrap_content"
+ android:layout_height="wrap_content" 
+ android:background="@drawable/checkbox" 
+ android:id="@+id/iconforcheckbox">
+ </ImageView>
+ <TextView
+android:id="@+id/text"
+android:layout_gravity="center_vertical"
+android:textSize="10dip" 
+android:layout_height="150dip" 
+android:layout_width="180dip"/>
+<ImageView android:id="@+id/CabinetFullScreenIcon" 
+android:layout_width="wrap_content" 
+android:layout_height="wrap_content" 
+android:layout_marginTop="150dip" android:background="@drawable/arrowmorebutt"></ImageView>
+
+</LinearLayout>

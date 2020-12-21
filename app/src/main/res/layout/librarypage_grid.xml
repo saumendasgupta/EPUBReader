@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:id="@+id/LibraryMainPage"
+	android:visibility="visible" 
+	android:layout_height="fill_parent" android:background="@drawable/bg">
+
+
+	<RelativeLayout android:layout_alignParentTop="true"
+		android:id="@+id/header"
+		android:background="@drawable/headerbar" 
+		android:layout_width="fill_parent" 
+		android:layout_height="40dip">
+		<ImageView android:id="@+id/headerhomeimage" 
+		android:background="@drawable/headerebookicon" 
+		android:layout_height="22dip" 
+		android:layout_width="22dip" 
+		android:layout_marginLeft="12dip" 
+		android:layout_marginTop="10dip">
+		</ImageView>
+		<TextView android:layout_width="wrap_content" 
+		android:text="E-Book Home" 
+		android:id="@+id/headertext" 
+		android:layout_height="30dip" 
+		android:layout_marginLeft="38dip" 
+		android:layout_marginTop="10dip" android:textStyle="bold"
+		android:textColor="#ffffff">
+		</TextView>
+		<ImageView android:background="@drawable/activewindowicon"
+			android:clickable="true" 
+			android:id="@+id/activewindow"
+			android:layout_height="18dip" 
+			android:layout_width="68dip" 
+			android:layout_marginLeft="210dip" 
+			android:layout_marginTop="24dip">
+		</ImageView>
+		
+
+<ImageView android:layout_height="22dip" 
+	android:layout_width="24dip" 
+	android:layout_marginLeft="420dip" 
+	android:layout_marginTop="10dip" 
+	android:background="@drawable/headerwifiicon" 
+	android:id="@+id/headerwifiImage">
+</ImageView>
+<ImageView android:layout_width="36dip" 
+	android:layout_height="22dip" 
+	android:layout_marginLeft="460dip" 
+	android:layout_marginTop="10dip" 
+	android:background="@drawable/headerbatteryicon" 
+	android:id="@+id/batteryIconImage">
+</ImageView>
+		
+	
+<TextView android:layout_width="wrap_content" 
+android:layout_height="30dip" 
+android:text="06:30" 
+android:layout_marginLeft="335dip" 
+android:id="@+id/Time" 
+android:layout_marginTop="10dip" android:textStyle="bold" android:textColor="#ffffff">
+</TextView>
+
+</RelativeLayout>
+	
+	
+
+	<RelativeLayout android:id="@+id/placeholder" 
+		android:layout_below="@+id/header" 
+		android:layout_height="47dip" android:background="@drawable/headericonsstripbg" 
+		android:layout_width="fill_parent">
+		<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/placehold" 
+			android:layout_width="fill_parent"
+			android:stretchMode="columnWidth" 
+			android:gravity="center"
+			android:layout_below="@+id/placeholder" 
+			android:layout_height="fill_parent"
+			android:scrollbars="none"
+			android:numColumns="7" android:columnWidth="53dip"></GridView>
+	</RelativeLayout>
+	<RelativeLayout android:id="@+id/bookholder" 
+		android:layout_below="@id/placeholder" 
+		android:layout_height="779dip" android:layout_width="467dip">
+
+		<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/librarymainpage" 
+			android:layout_width="fill_parent"
+			android:layout_below="@+id/placeholder"
+			android:numColumns="3" 
+			android:scrollbars="vertical" 
+			android:stretchMode="columnWidth" 
+			android:verticalSpacing="45dip" 
+			android:horizontalSpacing="20dip" 
+			android:columnWidth="129dip" 
+			android:layout_height="fill_parent"
+			android:scrollbarThumbVertical="@drawable/mylibraryscroller"></GridView>
+
+
+	</RelativeLayout>
+	
+	<RelativeLayout android:layout_width="43dip" 
+	android:layout_alignParentRight="true" 
+	android:id="@+id/booknameindex" 
+	android:background="@drawable/mylibraryalphabetsbg" 
+	android:layout_below="@id/placeholder" 
+	android:layout_height="779dip">
+	
+	<GridView android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:numColumns="1"
+	android:id="@+id/librarybookmarkportion"
+	android:horizontalSpacing="10dip" 
+	android:verticalSpacing="7dip" 
+	android:scrollbars="none"/>
+	</RelativeLayout>
+	
+	<RelativeLayout 
+		android:id="@+id/libfooter"
+		android:layout_below="@id/bookholder"
+		android:layout_width="fill_parent" 
+		android:background="@drawable/footerstripebg" 
+		android:layout_height="42dip" >
+		
+		<TextView android:id="@+id/pageno" 
+		android:layout_height="25dip" 
+		android:layout_width="57dip" 
+		android:layout_marginLeft="24dip" 
+		android:background="@drawable/pagenumberbg"
+		android:textColor="#000000" android:layout_marginTop="8dip">
+		</TextView>
+		<ImageView android:id="@+id/thumbnailview" 
+			android:background="@drawable/gridviewicon" 
+			android:layout_height="28dip" 
+			android:layout_width="28dip" 
+			android:layout_marginLeft="400dip" 
+			android:layout_centerVertical="true">
+			</ImageView>
+		<ImageView android:id="@+id/listviewchange"
+			android:background="@drawable/listviewicon" 
+			android:layout_height="28dip" 
+			android:layout_width="28dip" 
+			android:layout_marginLeft="454dip" 
+			android:layout_centerVertical="true">
+			</ImageView>
+
+	
+
+</RelativeLayout>
+
+</RelativeLayout>

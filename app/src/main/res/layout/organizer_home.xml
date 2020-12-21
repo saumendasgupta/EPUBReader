@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+	<!-- For main conatiner/ screen -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/main_container" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:background="@drawable/bg">
+	<!-- for header bar -->
+	
+	<RelativeLayout android:layout_alignParentTop="true"
+		android:id="@+id/header"
+		android:background="@drawable/headerbar" 
+		android:layout_width="fill_parent" 
+		android:layout_height="40dip">
+		<ImageView android:id="@+id/headerhomeimage" 
+		android:background="@drawable/headerhomeicon" 
+		android:layout_height="22dip" 
+		android:layout_width="22dip" 
+		android:layout_marginLeft="12dip" 
+		android:layout_marginTop="10dip">
+		</ImageView>
+		<TextView android:layout_width="wrap_content" 
+		android:text="Organizer" 
+		android:id="@+id/headertext" 
+		android:layout_height="30dip" 
+		android:layout_marginLeft="38dip" 
+		android:layout_marginTop="10dip" android:textStyle="bold"
+		android:textColor="#ffffff">
+		</TextView>
+		<ImageView android:background="@drawable/activewindowicon"
+			android:clickable="true" 
+			android:id="@+id/active_window"
+			android:layout_height="18dip" 
+			android:layout_width="68dip" 
+			android:layout_marginLeft="210dip" 
+			android:layout_marginTop="24dip">
+		</ImageView>
+		
+
+<ImageView android:layout_height="22dip" 
+	android:layout_width="24dip" 
+	android:layout_marginLeft="420dip" 
+	android:layout_marginTop="10dip" 
+	android:background="@drawable/headerwifiicon" 
+	android:id="@+id/headerwifiImage">
+</ImageView>
+<ImageView android:layout_width="36dip" 
+	android:layout_height="22dip" 
+	android:layout_marginLeft="460dip" 
+	android:layout_marginTop="10dip" 
+	android:background="@drawable/headerbatteryicon" 
+	android:id="@+id/batteryIconImage">
+</ImageView>
+		
+	
+<TextView android:layout_width="wrap_content" 
+android:layout_height="30dip" 
+android:text="06:30" 
+android:layout_marginLeft="335dip" 
+android:id="@+id/Time" 
+android:layout_marginTop="10dip" android:textStyle="bold" android:textColor="#ffffff">
+</TextView>
+
+</RelativeLayout>
+	
+	
+	
+	
+	
+	
+	
+<RelativeLayout android:background="@drawable/headericonsstripbg"
+		android:layout_width="fill_parent" android:layout_height="47dip"
+		android:layout_below="@+id/header" android:id="@+id/menuitems_holder">
+		<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="fill_parent" android:stretchMode="columnWidth"
+			android:gravity="center" android:numColumns="8" android:scrollbars="none"
+			android:columnWidth="40dip" android:layout_height="fill_parent"
+			android:id="@+id/menuitems_grid"></GridView>
+
+	</RelativeLayout>
+
+	<!-- for menu items header bar  -->
+
+
+	<!-- For the middle note body  -->
+
+	<AbsoluteLayout android:id="@+id/notes_holder"
+		android:layout_below="@id/menuitems_holder" android:layout_width="fill_parent"
+		android:background="@drawable/cascadeviewbg" android:layout_height="619dip">
+	</AbsoluteLayout>
+	<RelativeLayout android:id="@+id/notes_footer"
+		android:layout_width="fill_parent" android:background="@drawable/organizerfooter" 
+		android:layout_height="44dip" 
+		android:layout_below="@id/notes_holder">
+		<ImageView android:id="@+id/listview" 
+			android:background="@drawable/listviewicon"
+			android:layout_centerVertical="true" android:layout_height="28dip"
+			android:layout_marginLeft="466dip" android:layout_width="28dip"></ImageView>
+		<ImageView android:layout_below="@id/notes_holder"
+			android:id="@+id/cascadeview" 
+			android:background="@drawable/cascadeviewactiveicon"
+			android:layout_centerVertical="true" android:layout_height="28dip"
+			android:layout_width="28dip" android:layout_marginLeft="420dip"></ImageView>
+		<ImageView android:id="@+id/pagenumber_back"
+			android:layout_width="57dip" android:layout_height="25dip"
+			android:layout_marginLeft="16dip" android:layout_centerVertical="true"
+			android:background="@drawable/pagenumberbg"></ImageView>
+
+		<TextView android:layout_below="@id/notes_holder" android:id="@+id/notenumber_display"
+			android:layout_alignParentLeft="@id/notes_holder"
+			android:layout_height="20dip" android:text="note number"
+			android:textSize="13sp" android:layout_width="wrap_content"
+			android:layout_centerVertical="true" android:layout_marginLeft="18dip"
+			android:textColor="#000000"></TextView>
+
+	</RelativeLayout>
+	<RelativeLayout android:id="@+id/allnotes_container"
+		android:layout_below="@id/notes_footer" 
+		android:layout_width="fill_parent" 
+		android:background="@drawable/organizercategory" android:layout_height="156dip">
+
+		<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/notes_grid" android:layout_width="fill_parent"
+			android:verticalSpacing="10dp" android:horizontalSpacing="10dp"
+			android:layout_marginTop="20dip"
+			android:layout_below="@+id/notes_footer" android:gravity="bottom"
+			android:numColumns="5" android:stretchMode="columnWidth"
+			android:scrollbars="none" android:layout_height="156dip"></GridView>
+
+
+
+	</RelativeLayout>
+
+
+
+	<!-- for note footer/ for views and page number -->
+
+
+
+	<!-- For all notes sliding -->
+
+
+
+</RelativeLayout>

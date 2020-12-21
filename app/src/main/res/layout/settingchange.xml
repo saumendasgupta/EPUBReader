@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent"	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:id="@+id/settingchange"
+	android:visibility="visible" 
+	android:layout_gravity="bottom"
+	android:layout_height="545dip" 
+	android:background="@drawable/managehomeitembgwithoutheader">
+
+	<RelativeLayout android:layout_height="43dip" 
+	android:layout_width="fill_parent" 
+	android:id="@+id/homesettingheaderbar" 
+	android:background="@drawable/managehomeheaderbar">
+	<TextView android:layout_width="wrap_content" 
+	android:layout_height="20dip" 
+	android:id="@+id/settingtext" 
+	android:text="Settings" android:textColor="#ffffff"
+	android:layout_marginTop="8dip" 
+	android:layout_marginLeft="50dip"
+	android:textSize="15dip">
+	</TextView>
+	<ImageView android:layout_height="33dip" 
+	android:layout_width="33dip"
+	 android:layout_marginLeft="12dip" 
+	 android:layout_marginTop="5dip"
+	 android:id="@+id/homesettingheadericon1" 
+	 android:background="@drawable/footersettingsicon">
+	 </ImageView>
+<ImageView android:layout_height="25dip" 
+android:layout_width="25dip" 
+android:layout_marginLeft="470dip" 
+android:layout_marginTop="8dip"
+android:id="@+id/homesettingheadericon2" 
+android:background="@drawable/closebuttfullscreen">
+</ImageView>
+
+</RelativeLayout>
+	<RelativeLayout android:id="@+id/settingsholder"
+		android:layout_height="502dip" android:layout_width="fill_parent" android:layout_below="@+id/homesettingheaderbar">
+		
+		<Button android:text="Manage Home"  android:textColor="#ffffff"
+		android:id="@+id/managehome"
+			android:layout_height="62dip" 
+			android:layout_width="fill_parent" 
+			android:background="@drawable/itemstabnonselected">
+			</Button>
+		
+		
+	<Button android:text="Power Managment" android:textColor="#ffffff"
+	android:id="@+id/powermanagement" 
+	android:height="62dip" android:width="480dip" android:layout_below="@+id/managehome" android:layout_height="62dip" android:layout_width="fill_parent" android:background="@drawable/itemstabnonselected"></Button>
+<Button android:text="Network and Connectivity" android:textColor="#ffffff"
+	android:id="@+id/network" 
+	android:layout_height="62dip" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/powermanagement" 
+	android:background="@drawable/itemstabnonselected"></Button>
+<Button android:text="Bluetooth" android:textColor="#ffffff"
+	android:id="@+id/bluetooth" 
+	android:layout_height="62dip" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/network" 
+	android:background="@drawable/itemstabnonselected"></Button>
+<Button android:text="Time and Date" android:textColor="#ffffff"
+	android:id="@+id/timeanddate" 
+	android:layout_height="62dip" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/bluetooth" 
+	android:background="@drawable/itemstabnonselected"></Button>
+<Button android:text="Brightness" android:textColor="#ffffff"
+	android:id="@+id/brightness" 
+	android:layout_height="62dip" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/timeanddate" 
+	android:background="@drawable/itemstabnonselected"></Button>
+<Button android:text="Contrast" android:textColor="#ffffff"
+	android:id="@+id/contrast" 
+	android:layout_height="62dip" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/brightness" 
+	android:background="@drawable/itemstabnonselected"></Button>
+<Button android:text="Volume Control" android:textColor="#ffffff"
+	android:id="@+id/volume" 
+	android:layout_height="62dip" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/contrast" 
+	android:background="@drawable/itemstabnonselected"></Button>
+</RelativeLayout>
+
+
+</RelativeLayout>

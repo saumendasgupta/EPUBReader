@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_height="90dip" android:layout_width="425dip">
+    
+    <ListView android:drawSelectorOnTop="false" 
+        android:layout_gravity="bottom" 
+        android:id="@android:id/list" android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+    
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:textSize="16sp" 
+    android:layout_height="wrap_content" 
+    android:background="@drawable/activewindowlistviewbg">
+</TextView>
+
+<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/closeactivewindow" android:background="@drawable/activewindowdragicon"></ImageView>
+</RelativeLayout>

@@ -1,0 +1,157 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .idea\
+* .idea\QuikE.iml
+* .idea\codeStyles\
+* .idea\codeStyles\Project.xml
+* .idea\encodings.xml
+* .idea\modules.xml
+* .idea\workspace.xml
+* CVS\
+* CVS\Entries
+* CVS\Entries.Extra
+* CVS\Entries.Extra.Old
+* CVS\Entries.Old
+* CVS\Repository
+* CVS\Root
+* CVS\Tag
+* default.properties
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app\src\main\AndroidManifest.xml
+* assets\ => app\src\main\assets\
+* res\ => app\src\main\res\
+* src\ => app\src\main\java\
+* src\com\android\CVS\Entries => app\src\main\resources\com\android\CVS\Entries
+* src\com\android\CVS\Entries.Extra => app\src\main\resources\com\android\CVS\Entries.Extra
+* src\com\android\CVS\Entries.Extra.Old => app\src\main\resources\com\android\CVS\Entries.Extra.Old
+* src\com\android\CVS\Entries.Old => app\src\main\resources\com\android\CVS\Entries.Old
+* src\com\android\CVS\Repository => app\src\main\resources\com\android\CVS\Repository
+* src\com\android\CVS\Root => app\src\main\resources\com\android\CVS\Root
+* src\com\android\CVS\Tag => app\src\main\resources\com\android\CVS\Tag
+* src\com\android\Dictionary\CVS\Entries => app\src\main\resources\com\android\Dictionary\CVS\Entries
+* src\com\android\Dictionary\CVS\Entries.Extra => app\src\main\resources\com\android\Dictionary\CVS\Entries.Extra
+* src\com\android\Dictionary\CVS\Entries.Extra.Old => app\src\main\resources\com\android\Dictionary\CVS\Entries.Extra.Old
+* src\com\android\Dictionary\CVS\Entries.Old => app\src\main\resources\com\android\Dictionary\CVS\Entries.Old
+* src\com\android\Dictionary\CVS\Repository => app\src\main\resources\com\android\Dictionary\CVS\Repository
+* src\com\android\Dictionary\CVS\Root => app\src\main\resources\com\android\Dictionary\CVS\Root
+* src\com\android\Dictionary\CVS\Tag => app\src\main\resources\com\android\Dictionary\CVS\Tag
+* src\com\android\DisplayManager\CVS\Entries => app\src\main\resources\com\android\DisplayManager\CVS\Entries
+* src\com\android\DisplayManager\CVS\Entries.Extra => app\src\main\resources\com\android\DisplayManager\CVS\Entries.Extra
+* src\com\android\DisplayManager\CVS\Entries.Extra.Old => app\src\main\resources\com\android\DisplayManager\CVS\Entries.Extra.Old
+* src\com\android\DisplayManager\CVS\Entries.Old => app\src\main\resources\com\android\DisplayManager\CVS\Entries.Old
+* src\com\android\DisplayManager\CVS\Repository => app\src\main\resources\com\android\DisplayManager\CVS\Repository
+* src\com\android\DisplayManager\CVS\Root => app\src\main\resources\com\android\DisplayManager\CVS\Root
+* src\com\android\DisplayManager\CVS\Tag => app\src\main\resources\com\android\DisplayManager\CVS\Tag
+* src\com\android\DisplayManager\Display_Manager.java~ => app\src\main\resources\com\android\DisplayManager\Display_Manager.java~
+* src\com\android\DisplayManager\DispMgrBookInfo.java~ => app\src\main\resources\com\android\DisplayManager\DispMgrBookInfo.java~
+* src\com\android\DisplayManager\DispMgrBookmark.java~ => app\src\main\resources\com\android\DisplayManager\DispMgrBookmark.java~
+* src\com\android\DisplayManager\DispMgrPageStyleInfo.java~ => app\src\main\resources\com\android\DisplayManager\DispMgrPageStyleInfo.java~
+* src\com\android\DisplayManager\DispMgrUtility.java~ => app\src\main\resources\com\android\DisplayManager\DispMgrUtility.java~
+* src\com\android\DisplayManager\Page_Transition.java~ => app\src\main\resources\com\android\DisplayManager\Page_Transition.java~
+* src\com\android\EPUBparser\CVS\Entries => app\src\main\resources\com\android\EPUBparser\CVS\Entries
+* src\com\android\EPUBparser\CVS\Entries.Extra => app\src\main\resources\com\android\EPUBparser\CVS\Entries.Extra
+* src\com\android\EPUBparser\CVS\Entries.Extra.Old => app\src\main\resources\com\android\EPUBparser\CVS\Entries.Extra.Old
+* src\com\android\EPUBparser\CVS\Entries.Old => app\src\main\resources\com\android\EPUBparser\CVS\Entries.Old
+* src\com\android\EPUBparser\CVS\Repository => app\src\main\resources\com\android\EPUBparser\CVS\Repository
+* src\com\android\EPUBparser\CVS\Root => app\src\main\resources\com\android\EPUBparser\CVS\Root
+* src\com\android\EPUBparser\CVS\Tag => app\src\main\resources\com\android\EPUBparser\CVS\Tag
+* src\com\android\EPUBparser\EPUBparser.java~ => app\src\main\resources\com\android\EPUBparser\EPUBparser.java~
+* src\com\android\linebreak\CVS\Entries => app\src\main\resources\com\android\linebreak\CVS\Entries
+* src\com\android\linebreak\CVS\Entries.Extra => app\src\main\resources\com\android\linebreak\CVS\Entries.Extra
+* src\com\android\linebreak\CVS\Entries.Extra.Old => app\src\main\resources\com\android\linebreak\CVS\Entries.Extra.Old
+* src\com\android\linebreak\CVS\Entries.Old => app\src\main\resources\com\android\linebreak\CVS\Entries.Old
+* src\com\android\linebreak\CVS\Repository => app\src\main\resources\com\android\linebreak\CVS\Repository
+* src\com\android\linebreak\CVS\Root => app\src\main\resources\com\android\linebreak\CVS\Root
+* src\com\android\linebreak\CVS\Tag => app\src\main\resources\com\android\linebreak\CVS\Tag
+* src\com\android\linebreak\linebreak.java~ => app\src\main\resources\com\android\linebreak\linebreak.java~
+* src\com\android\organizer\CategoryEdit.java~ => app\src\main\resources\com\android\organizer\CategoryEdit.java~
+* src\com\android\organizer\CategoryList.java~ => app\src\main\resources\com\android\organizer\CategoryList.java~
+* src\com\android\organizer\CVS\Entries => app\src\main\resources\com\android\organizer\CVS\Entries
+* src\com\android\organizer\CVS\Entries.Extra => app\src\main\resources\com\android\organizer\CVS\Entries.Extra
+* src\com\android\organizer\CVS\Entries.Extra.Old => app\src\main\resources\com\android\organizer\CVS\Entries.Extra.Old
+* src\com\android\organizer\CVS\Entries.Old => app\src\main\resources\com\android\organizer\CVS\Entries.Old
+* src\com\android\organizer\CVS\Repository => app\src\main\resources\com\android\organizer\CVS\Repository
+* src\com\android\organizer\CVS\Root => app\src\main\resources\com\android\organizer\CVS\Root
+* src\com\android\organizer\CVS\Tag => app\src\main\resources\com\android\organizer\CVS\Tag
+* src\com\android\organizer\MoveInfo.java~ => app\src\main\resources\com\android\organizer\MoveInfo.java~
+* src\com\android\organizer\NoteOrganizer.java~ => app\src\main\resources\com\android\organizer\NoteOrganizer.java~
+* src\com\android\organizer\NotesListScroll.java~ => app\src\main\resources\com\android\organizer\NotesListScroll.java~
+* src\com\android\organizer\Organizer.java~ => app\src\main\resources\com\android\organizer\Organizer.java~
+* src\com\android\organizer\ViewHolder.java~ => app\src\main\resources\com\android\organizer\ViewHolder.java~
+* src\com\android\QuikE\.#DataBaseClass.java.1.1.1.1 => app\src\main\resources\com\android\QuikE\.#DataBaseClass.java.1.1.1.1
+* src\com\android\QuikE\.#MyCabinet.java.1.1.1.1 => app\src\main\resources\com\android\QuikE\.#MyCabinet.java.1.1.1.1
+* src\com\android\QuikE\ActiveWindow.java~ => app\src\main\resources\com\android\QuikE\ActiveWindow.java~
+* src\com\android\QuikE\CVS\Entries => app\src\main\resources\com\android\QuikE\CVS\Entries
+* src\com\android\QuikE\CVS\Entries.Extra => app\src\main\resources\com\android\QuikE\CVS\Entries.Extra
+* src\com\android\QuikE\CVS\Entries.Extra.Old => app\src\main\resources\com\android\QuikE\CVS\Entries.Extra.Old
+* src\com\android\QuikE\CVS\Entries.Old => app\src\main\resources\com\android\QuikE\CVS\Entries.Old
+* src\com\android\QuikE\CVS\Repository => app\src\main\resources\com\android\QuikE\CVS\Repository
+* src\com\android\QuikE\CVS\Root => app\src\main\resources\com\android\QuikE\CVS\Root
+* src\com\android\QuikE\CVS\Tag => app\src\main\resources\com\android\QuikE\CVS\Tag
+* src\com\android\QuikE\DataBaseClass.java~ => app\src\main\resources\com\android\QuikE\DataBaseClass.java~
+* src\com\android\QuikE\LibraryMainPage.java~ => app\src\main\resources\com\android\QuikE\LibraryMainPage.java~
+* src\com\android\QuikE\LibraryMainPageList.java~ => app\src\main\resources\com\android\QuikE\LibraryMainPageList.java~
+* src\com\android\QuikE\ListScroll.java~ => app\src\main\resources\com\android\QuikE\ListScroll.java~
+* src\com\android\QuikE\ManageHome.java~ => app\src\main\resources\com\android\QuikE\ManageHome.java~
+* src\com\android\QuikE\MyCabinet.java~ => app\src\main\resources\com\android\QuikE\MyCabinet.java~
+* src\com\android\QuikE\QuikE.java~ => app\src\main\resources\com\android\QuikE\QuikE.java~
+* src\com\android\QuikE\SaveAsNote.java~ => app\src\main\resources\com\android\QuikE\SaveAsNote.java~
+* src\com\android\QuikE\SettingChange.java~ => app\src\main\resources\com\android\QuikE\SettingChange.java~
+* src\com\android\QuikE\Sharing.java~ => app\src\main\resources\com\android\QuikE\Sharing.java~
+* src\com\android\QuikE\TOC.java~ => app\src\main\resources\com\android\QuikE\TOC.java~
+* src\com\android\QuikE\TocLayout.java~ => app\src\main\resources\com\android\QuikE\TocLayout.java~
+* src\com\CVS\Entries => app\src\main\resources\com\CVS\Entries
+* src\com\CVS\Entries.Extra => app\src\main\resources\com\CVS\Entries.Extra
+* src\com\CVS\Entries.Extra.Old => app\src\main\resources\com\CVS\Entries.Extra.Old
+* src\com\CVS\Entries.Old => app\src\main\resources\com\CVS\Entries.Old
+* src\com\CVS\Repository => app\src\main\resources\com\CVS\Repository
+* src\com\CVS\Root => app\src\main\resources\com\CVS\Root
+* src\com\CVS\Tag => app\src\main\resources\com\CVS\Tag
+* src\CVS\Entries => app\src\main\resources\CVS\Entries
+* src\CVS\Entries.Extra => app\src\main\resources\CVS\Entries.Extra
+* src\CVS\Entries.Extra.Old => app\src\main\resources\CVS\Entries.Extra.Old
+* src\CVS\Entries.Old => app\src\main\resources\CVS\Entries.Old
+* src\CVS\Repository => app\src\main\resources\CVS\Repository
+* src\CVS\Root => app\src\main\resources\CVS\Root
+* src\CVS\Tag => app\src\main\resources\CVS\Tag
+* cabinetpic.PNG => cabinetpic.png
+* dummybackforcabinet.PNG => dummybackforcabinet.png
+* dummybook.PNG => dummybook.png
+* Entries.Extra => Entries.extra
+* Entries.Extra.Old => Entries.extra.old
+* Entries.Old => Entries.old
+* footerbackground.PNG => footerbackground.png
+* line.PNG => line.png
+* listviewchange.PNG => listviewchange.png
+* mycabinet.PNG => mycabinet.png
+* mycabinetbackground.PNG => mycabinetbackground.png
+* settingsbackground.PNG => settingsbackground.png
+* thumbnail.PNG => thumbnail.png
+* whitebackground.PNG => whitebackground.png
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

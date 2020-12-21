@@ -1,0 +1,954 @@
+
+package com.android.QuikE;
+
+import android.app.Activity;
+import android.app.LocalActivityManager;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AbsoluteLayout;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import android.widget.AdapterView.OnItemClickListener;
+
+import com.android.DisplayManager.Display_Manager;
+import com.android.organizer.NoteOrganizer;
+import com.android.organizer.Organizer;
+
+public class MyCabinet extends Activity {
+
+	/*
+	 * this variable will take the current activity and start another activity
+	 * inside this activity
+	 */
+	protected static LocalActivityManager mLocalActivityManager;
+	/* this array is used to store Cabinet data */
+	static String mSaveData[];
+	/* this variable will store the number of data in the database */
+	static int mIndex;
+
+	// this flag will be usefull when cabinet
+	// will refresh and we need to show checkbox
+	static int mRefreshCheckBox = 0;
+
+	// Note id received from the NoteOrganizer
+	int mCurrentNoteId = 0;
+	/*
+	 * this variable is to used for showing the checkbox when organizer called
+	 * from my cabinet
+	 */
+	boolean mCountCheck = true;
+
+	// Text string that is to be dragged from cabinet to note
+	String mTextToDrag;
+
+	// this variable for the position of data in cabinet which is to be deleted
+	public static int mDeletePosition;
+	public static int mFlag;
+
+	/* these views are used for showing NoteSaving,showing note name */
+	GridView mNoteSavingPlace;
+	TextView mSetTextForCabinet;
+	AbsoluteLayout mDragTextLayout;
+	RelativeLayout mMyCabinet;
+
+	// Relative layout for closing the cabinet
+	RelativeLayout mMyCabinetDown;
+
+	// Text View on which drag action is to be done
+	TextView mTextViewToDrag;
+	// static int mCabinetPlace=0;
+	String mCabinetPlace = "Temp";
+	/* 0 is used to show cabinet is open,1 means Note open in place of Cabinet */
+
+	/* this boolean is used to indicate if Cabinet is opened */
+	public static boolean mIncabinet = true;
+
+	/* these variables are used to database connection */
+	private static final String DATABASE_NAME_BOOK = "BookDataBase.db";
+	/* table name for cabinet */
+	private static final String TABLE_NAME_CABINET = "CabinetInfoTable";
+	/* id for dummy textview */
+	protected static final int TEXT_TO_DRAG_ID = 3000;
+	/* constant system time */
+	protected final int SYSTEM_TIME = 1243;
+	/* this variable is to indicate if cabinet is in note or in book */
+	protected final int SWITCH_POSSIBLE = 2;
+	/* this variable is to indicate cabinet checkbox should refresh */
+	protected final int REFRESH_CHECKBOK_POSSIBLE = 1;
+	/* this variable is to indicate cabinet checkbox should not refresh */
+	protected final int REFRESH_CHECKBOK_NOTPOSSIBLE = 0;
+	/* macro for indicate cabinet will go to full screen */
+	protected final int FULL_SCREEN = 400;
+	/* macro to indicate cabinet will close */
+	protected final int CLOSE_CABINET = 700;
+	/* this macro is to set if cabinet open from note or from book */
+	public static boolean CABINET_OPEN_FROM_NOTE = false;
+	// SQLiteDatabase mDataBase = null;
+	/* object of database class */
+	DataBaseClass mDb;
+	/* cursor object */
+	Cursor mCursor;
+	/* cursor object to check the checkbox */
+	Cursor mIsSelectInCabinet;
+	/* string to indicate full screen */
+	String mFullScreen;
+	/* string to store from where cabinet is called */
+	String mTextCalledFrom;
+	/* show the text as cabinet or note name */
+	String mCabinetText;
+	/* take the selected text */
+	String mExtractedText;
+
+	Bundle mBundleFromOrganizer;
+
+	/* this function is used when in place of cabinet selected note will open */
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (resultCode == 1) {
+			/* get the selected note ID */
+			QuikE.mFromOrganizerNoteIdInCabinet = Organizer.mForCabinetChangeID;
+			/* create the object of the database class */
+			mDb = new DataBaseClass(this);
+			/* get the handler of the database class */
+			mDb.mDatab = mDb.mDatah.getReadableDatabase();
+			/* first set the text as note name */
+			Cursor mTextCursor = mDb
+					.returnTextForOrganizer(QuikE.mFromOrganizerNoteIdInCabinet);
+			/*
+			 * for setting the name of the note in place of cabinet first check
+			 * if that note has atleast one name
+			 */
+			if (mTextCursor.getCount() > 0) {
+
+				mTextCursor.moveToFirst();
+				/* get the note name */
+				String mSetText = mTextCursor.getString(0);
+				/* display the note name in place of CABINET */
+				mSetTextForCabinet.setText(mSetText);
+				/* set the cabinet name as note name */
+				mCabinetText = mSetTextForCabinet.getText().toString();
+			}
+			/* close the cursor */
+			mTextCursor.close();
+			// take data from Organizer database
+			/*
+			 * set the flag that Switcher once happen so now Switcher icon
+			 * should work now
+			 */
+			mFlag = SWITCH_POSSIBLE;
+			/* take the data from the organizer table */
+			mCursor = mDb
+					.returnCursorForOrganizer(QuikE.mFromOrganizerNoteIdInCabinet);
+			/* no of element in organizer table */
+			mIndex = mCursor.getCount();
+			/* move the cursor to the first position */
+			mCursor.moveToFirst();
+			/* initialize the string where the data from organizer will save */
+			mSaveData = new String[mIndex];
+			/* take all the data from the database of that note */
+			for (int i = 0; i < mIndex; i++) {
+				/* take the data from the organizer */
+				mSaveData[i] = mCursor.getString(0);
+				/* move the cursor */
+				mCursor.moveToNext();
+			}
+			mCursor.close();
+			/* set the adapter for showing the Cabinet Data */
+			mNoteSavingPlace.setAdapter(new AdapterNoteSavingPlace(this));
+
+			//
+			Organizer.mForCabinetChangeID = 0;
+		}
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		/* code to hide the status bar */
+		/* get the default window hight */
+		final Window win = getWindow();
+		/* get the current window hight */
+		final int screenHeight = win.getWindowManager().getDefaultDisplay()
+				.getHeight();
+		/* get the current window width */
+		final int screenWidth = win.getWindowManager().getDefaultDisplay()
+				.getWidth();
+
+		if ((screenHeight > 1 && screenWidth > 1)
+				|| (screenHeight == QuikE.SCREEN_HIGHT && screenWidth == QuikE.SCREEN_WIDTH)) {
+			// No
+			// Statusbar
+			win.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+					WindowManager.LayoutParams.FLAG_FULLSCREEN); // No Titlebar
+			/* no title bar, no status bar */
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			requestWindowFeature(Window.FEATURE_PROGRESS);
+		}
+		/* code end for hiding the status bar */
+
+		/*
+		 * create one new absolute layout where the copied text will be shown
+		 * and give its parameter
+		 */
+		/* initialize the absolute layout */
+		mDragTextLayout = new AbsoluteLayout(this);
+		/* set the layout param */
+		mDragTextLayout.setLayoutParams(new AbsoluteLayout.LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 0, 0));
+
+		/* get the bundle from different Activities */
+		Bundle mBundle = this.getIntent().getExtras();
+		/* first set the cabinet layout */
+		setContentView(R.layout.mycabinet);
+		/* initialize the textview */
+		/* set the default text as 'Cabinet' */
+		mSetTextForCabinet = (TextView) findViewById(R.id.cabinettext);
+		mSetTextForCabinet.setText("Cabinet");
+
+		/*
+		 * if any place of the Cabinet ,ImageView or the whole header,if clicked
+		 * then Cabinet should work according to the gesture
+		 */
+		mMyCabinet = (RelativeLayout) findViewById(R.id.mycabinetlayout);
+		/* initialize the imageview */
+		ImageView mCloseCabinet = (ImageView) findViewById(R.id.endCabinet);
+
+		/* Relative Layout for closing the cabinet */
+		RelativeLayout mMyCabinetDown = (RelativeLayout) findViewById(R.id.cabinetdownlayout);
+		/* set the touch listener on the layout */
+		mMyCabinetDown.setOnTouchListener(new View.OnTouchListener() {
+
+			public boolean onTouch(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				/* if fullscreen mode gesture is done */
+				case MotionEvent.ACTION_MOVE: {
+					if (event.getRawY() < FULL_SCREEN) {
+						/* if request fro fullscreen */
+						fullScreen();
+					}
+					/* if close cabinet gesture is done */
+					if (event.getRawY() > CLOSE_CABINET) {
+						/* if cabinet is opened from Note */
+						if (NoteOrganizer.mLocalActivityManager != null) {
+							/* close the cabinet when in note */
+							NoteOrganizer.CloseCabinet();
+						}
+						/* if cabinet is opened from display Manager */
+						else
+							Display_Manager.CloseCabinet();
+						/* close the cabinet in book */
+					}
+				}
+					break;
+				}
+				return true;
+			}
+		});
+		/* if touch on the Image same action will be done */
+		mCloseCabinet.setOnTouchListener(new View.OnTouchListener() {
+
+			public boolean onTouch(View v, MotionEvent event) {
+
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_MOVE: {
+
+					if (event.getRawY() < FULL_SCREEN) {
+						/* if request for full screen */
+						fullScreen();
+					}
+					if (event.getRawY() > CLOSE_CABINET) {
+						/* if request for close cabinet */
+						if (NoteOrganizer.mLocalActivityManager != null) {
+							/* close cabinet in note */
+							NoteOrganizer.CloseCabinet();
+						} else
+							Display_Manager.CloseCabinet();
+						/* close cabinet in book */
+					}
+				}
+					break;
+				}
+				return true;
+			}
+		});
+		/* if clicked on the image of close cabinet same action will be done */
+		mCloseCabinet.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				/* create a intent */
+				Intent mIntentBack = new Intent(MyCabinet.this,
+						Display_Manager.class);
+				/* create the bundle */
+				Bundle mBundleBacktoBook = new Bundle();
+				/* add the book path with the bundle */
+				mBundleBacktoBook.putString("BookViewBack", "CabinetClosed");
+				mIntentBack.putExtras(mBundleBacktoBook);
+				/* start the book display page */
+				startActivity(mIntentBack);
+
+			}
+		});
+		/* extract all the bundle information */
+		if (mBundle != null) {
+			/* get the copied text from book to cabinet */
+			mExtractedText = mBundle.getString("ExtractedText");
+			/* get the selected note id for switching */
+			if (mBundle.getInt("selectedNoteId_key") != 0) {
+				QuikE.mFromOrganizerNoteIdInCabinet = mBundle
+						.getInt("selectedNoteId_key");
+			}
+			/*
+			 * get the intent if cabinet will be opened in ful screen or small
+			 * screen
+			 */
+			mFullScreen = mBundle.getString("BookViewFullScreen");
+			/* get the last note open in the organizer */
+			mCurrentNoteId = mBundle.getInt("lastNoteIdNO_key");
+			/*
+			 * first check if cabinet is already opened and if it is not in full
+			 * screen mode
+			 */
+			if (mFullScreen != null
+					&& mFullScreen.equalsIgnoreCase("CabinetOpen")) {
+				setContentView(R.layout.cabinetfullscreen);
+				/* first set the text as note name */
+				mSetTextForCabinet = (TextView) findViewById(R.id.cabinettext);
+				/* create the object of the database and connect with database */
+				mDb = new DataBaseClass(this);
+				/* get the data from the organizer table */
+				Cursor mTextCursor = mDb
+						.returnTextForOrganizer(QuikE.mFromOrganizerNoteIdInCabinet);
+				/* if the selected note has its name then set it */
+				if (mTextCursor.getCount() > 0) {
+					/* move the cursor to the first position */
+					mTextCursor.moveToFirst();
+					/* get the note name */
+					String mSetText = mTextCursor.getString(0);
+					/* set the cabinet name as note name */
+					mSetTextForCabinet.setText(mSetText);
+				}
+				/* close the cursor */
+				mTextCursor.close();
+				/*
+				 * initialize the close fullscreen image and set a on click
+				 * listener on it
+				 */
+				/* initialize the image view */
+				ImageView mCloseFullScreen = (ImageView) findViewById(R.id.closefullscreen);
+				/* set the onclick listener on that image view */
+				mCloseFullScreen.setOnClickListener(new View.OnClickListener() {
+
+					public void onClick(View v) {
+						/* finish the cabinet activity */
+						MyCabinet.this.finish();
+					}
+				});
+
+			}
+
+		}
+		/* create the object of the database and connect with database */
+		final DataBaseClass mDb = new DataBaseClass(this);
+		mDb.mDatab = mDb.mDatah.getReadableDatabase();
+		/* if some text is selected from book and is intented to save in cabinet */
+		if (mExtractedText != null)
+			mDb.insertExtractedData(SYSTEM_TIME, mExtractedText);
+
+		/* this code is added to show switcher */
+		/* if cabinet is opended in Note Organizer not in display manager */
+		if (mBundle.getInt("selectedNoteId_key") != 0) {
+			Cursor mTextCursor = mDb
+					.returnTextForOrganizer(QuikE.mFromOrganizerNoteIdInCabinet);
+			/* get the note bame */
+			if (mTextCursor.getCount() > 0) {
+				/* set the cursor to the first position */
+				mTextCursor.moveToFirst();
+				/* get the note name */
+				String mSetText = mTextCursor.getString(0);
+				/* set the cabinet text as note name */
+				mSetTextForCabinet.setText(mSetText);
+			}
+			/* close the cursor */
+			mTextCursor.close();
+
+		}
+		/* get the text what is written on the left corner of the cabinet */
+		mCabinetText = mSetTextForCabinet.getText().toString();
+
+		/*
+		 * check the text ,if it is a cabinet then take data from cabinet
+		 * Database
+		 */
+		/* if it is in cabinet mode */
+		if (mCabinetText.equalsIgnoreCase("Cabinet")) {
+			/* take the data from cabinet table */
+			mCursor = mDb.returnCursorForCabinet();
+			/* get the no of elements */
+			mIndex = mCursor.getCount();
+			/* move the cursor to the first position */
+			mCursor.moveToFirst();
+			/* initilize the array */
+			mSaveData = new String[mIndex];
+			/* get the data from the cabinet and save it in a array */
+			for (int i = 0; i < mIndex; i++) {
+				mSaveData[i] = mCursor.getString(2);
+				/* move the cursor to the next position */
+				mCursor.moveToNext();
+			}
+			/* close the cursor */
+			mCursor.close();
+		}
+		/* check the text ,if it is a note then take data from note Database */
+		else {
+			/* set the now switch is possible */
+			mFlag = SWITCH_POSSIBLE;
+			/* get the data from the organizer */
+			mCursor = mDb
+					.returnCursorForOrganizer(QuikE.mFromOrganizerNoteIdInCabinet);
+			/* get the no of element in the organizer table */
+			mIndex = mCursor.getCount();
+			/* move the cursor to the first position */
+			mCursor.moveToFirst();
+			/* initialize the array */
+			mSaveData = new String[mIndex];
+			/* save the data taken from the organizer in the array */
+			for (int i = 0; i < mIndex; i++) {
+				mSaveData[i] = mCursor.getString(0);
+				/* move the cursor to the next position */
+				mCursor.moveToNext();
+			}
+			/* close the cursor */
+			mCursor.close();
+
+		}
+		/* this grid will show the cabinet save as ,switcher etc icons */
+		GridView mMyCabinetPlaceHolderG = (GridView) findViewById(R.id.gplageholederMyCabinet);
+		/* set a adpter on this grid view */
+		mMyCabinetPlaceHolderG
+				.setAdapter(new ImageAdapterPlaceHoldForMyCabinet(this));
+		/* set a on click listener on this grid view */
+		mMyCabinetPlaceHolderG
+				.setOnItemClickListener(new OnItemClickListener() {
+					public void onItemClick(
+							AdapterView<?> ImageAdapterPlaceHoldForMyCabinet,
+							View v, int position, long id) {
+
+						/* click for save as option */
+						if (position == 2) {
+							/*
+							 * first check if cabinet is opened from Note, if it
+							 * opened from note no option should work
+							 */
+							if (CABINET_OPEN_FROM_NOTE == false) {
+								Cursor mCheckCursor = mDb
+										.selectCheckedAllFromCabinet();
+								/*
+								 * First check atleast one item is checked in
+								 * cabinet
+								 */
+								if (mCheckCursor.getCount() != 0) {
+									/* create a intent */
+									Intent mSaveAs = new Intent(MyCabinet.this,
+											SaveAsNote.class);
+									/* start the save as activity */
+									startActivity(mSaveAs);
+								}
+							}
+						}
+						/* to share a note */
+						if (position == 3) {
+							/*
+							 * first check if cabinet is opened from Note, if it
+							 * opened from note no option should work
+							 */
+							/* create a intent */
+							Intent mSharing = new Intent(MyCabinet.this,
+									Sharing.class);
+							/* start the activity */
+							startActivity(mSharing);
+
+						}
+
+						/* if click on new note option from my cabinet */
+						if (position == 4) {
+							/*
+							 * first check if cabinet is opened from Note, if it
+							 * opened from note no option should work
+							 */
+							if (CABINET_OPEN_FROM_NOTE == false) {
+								Intent mStartOrganizer = new Intent(
+										MyCabinet.this, Organizer.class);
+								/*
+								 * this bundle is to know the organizer that
+								 * organizer is called from cabinet
+								 */
+								Bundle mBundle = new Bundle();
+								mBundle.putString("fromCabinetC_key",
+										"FromCabinet");
+								mStartOrganizer.putExtras(mBundle);
+
+								if (mIncabinet == true)
+									mIncabinet = false;
+								/* start the organizer activity */
+								/*set it false if once organizer called from MyCabinet*/
+								mCountCheck = false;
+								startActivityForResult(mStartOrganizer, 1);
+							}
+
+						}
+
+						/* if click for switcher */
+						if (position == 6) {
+
+							/*
+							 * first check if cabinet is opened from Note, if it
+							 * opened from note no option should work
+							 */
+							if (CABINET_OPEN_FROM_NOTE == false) {
+								/* if in Cabinet */
+								if (mFlag == SWITCH_POSSIBLE) {
+									/* if in cabinet switch to note */
+									if (mIncabinet == false) {
+										mIncabinet = true;
+									}/* if in note switch to cabinet */
+									else if (mIncabinet == true) {
+										mIncabinet = false;
+									}
+								}
+
+								if (mFlag == SWITCH_POSSIBLE
+										&& mIncabinet == true) {
+									/*
+									 * this flag will be helpful to show the
+									 * check box which was previously selected
+									 */
+									mRefreshCheckBox = REFRESH_CHECKBOK_POSSIBLE;
+
+									/* set the text as cabinet */
+									mSetTextForCabinet.setText("Cabinet");
+									/* get the data from Cabinet table */
+									Cursor mCursorForCabinetSwitch = mDb
+											.returnCursorForCabinet();
+									/* get the no of element */
+									mIndex = mCursorForCabinetSwitch.getCount();
+									/* move the cursor to the first */
+									mCursorForCabinetSwitch.moveToFirst();
+									/* next time note will open */
+
+									mSaveData = new String[mIndex];
+									/* get the data from cabinet table */
+									for (int i = 0; i < mIndex; i++) {
+										mSaveData[i] = mCursorForCabinetSwitch
+												.getString(2);
+										/* move the cursor */
+										mCursorForCabinetSwitch.moveToNext();
+									}
+									/* close the cursor */
+									mCursorForCabinetSwitch.close();
+									/* refresh the content */
+									mNoteSavingPlace
+											.setAdapter(new AdapterNoteSavingPlace(
+													MyCabinet.this));
+
+								}
+								/* this case will show data from organizer */
+								else if (mFlag == SWITCH_POSSIBLE
+										&& mIncabinet == false) {
+									mRefreshCheckBox = REFRESH_CHECKBOK_NOTPOSSIBLE;
+									/*
+									 * take data from organizer with the
+									 * selected note id
+									 */
+									Cursor mTextCursor = mDb
+											.returnTextForOrganizer(QuikE.mFromOrganizerNoteIdInCabinet);
+									/* if note is present */
+									if (mTextCursor.getCount() > 0) {
+										/* get the note name */
+										mTextCursor.moveToFirst();
+										String mSetText = mTextCursor
+												.getString(0);
+										/* set the cabinet text as the note name */
+										mSetTextForCabinet.setText(mSetText);
+									}
+									/* close the cursor */
+									mTextCursor.close();
+									/* next time cabinet will open */
+
+									/* take data from Organizer database */
+									mFlag = SWITCH_POSSIBLE;
+									/* take data from organizer */
+									mCursor = mDb
+											.returnCursorForOrganizer(QuikE.mFromOrganizerNoteIdInCabinet);
+									/* get the element count */
+									mIndex = mCursor.getCount();
+									/* move the cursor to the first place */
+									mCursor.moveToFirst();
+									/* initialize the array */
+									mSaveData = new String[mIndex];
+									/* get the element of organizer in array */
+									for (int i = 0; i < mIndex; i++) {
+										mSaveData[i] = mCursor.getString(0);
+										mCursor.moveToNext();
+									}
+									/* close the cursor */
+									mCursor.close();
+									/* refresh the cabinet data */
+									mNoteSavingPlace
+											.setAdapter(new AdapterNoteSavingPlace(
+													MyCabinet.this));
+								}
+
+							}
+						}
+					}
+
+				});
+		/* this portion for SavingNote Portion */
+		/* initialize the frid view */
+		mNoteSavingPlace = (GridView) findViewById(R.id.mycabinetSavingPlace);
+		/* set a adapter fro this grid */
+		mNoteSavingPlace.setAdapter(new AdapterNoteSavingPlace(this));
+		/* set a onclick listener on this grid */
+		mNoteSavingPlace.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> AdapterNoteSavingPlace,
+					View v, int position, long id) {
+				if(CABINET_OPEN_FROM_NOTE == true){
+
+				// The text is selected by grid view position number
+
+				// mDeletePosition stores the data number to be deleted
+				mDeletePosition = position + 1;
+				/* remove the previous view */
+				mDragTextLayout.removeAllViews();
+				/* remove the dummy textview also */
+				mMyCabinet.removeView(mDragTextLayout);
+
+				/* Selecting data from Database */
+				Cursor mGetText = mDb.selectTextDataFromCabinet(position);
+				/* move the cursor to the first */
+				mGetText.moveToFirst();
+				mTextToDrag = mGetText.getString(0);
+
+				if (NoteOrganizer.smCabinetOpen == true) {
+
+					mMyCabinet.addView(mDragTextLayout);
+
+				}
+
+				mTextViewToDrag = new TextView(MyCabinet.this);
+				mTextViewToDrag.setText(mTextToDrag);
+				mTextViewToDrag.setId(TEXT_TO_DRAG_ID);
+				mTextViewToDrag.setTextSize(15);
+				mTextViewToDrag.setTextColor(Color.BLACK);
+				mTextViewToDrag.setId(TEXT_TO_DRAG_ID);
+				if (position % 2 == 0)
+					mTextViewToDrag.setPadding(30, 95, 0, 0);
+				else if (position % 2 == 1)
+					mTextViewToDrag.setPadding(260, 95, 0, 0);
+
+				mDragTextLayout.addView(mTextViewToDrag);
+
+				mTextViewToDrag.setOnTouchListener(new OnTouchListener() {
+
+					@SuppressWarnings("deprecation")
+					public boolean onTouch(View v, MotionEvent event) {
+
+						AbsoluteLayout.LayoutParams par = (AbsoluteLayout.LayoutParams) v
+								.getLayoutParams();
+
+						switch (v.getId()) {
+						case TEXT_TO_DRAG_ID:
+							switch (event.getAction()) {
+							case MotionEvent.ACTION_MOVE: {
+								par.y = (int) event.getRawY()
+										- (mDragTextLayout.getHeight() + 500);
+								par.x = (int) event.getRawX()
+										- (mDragTextLayout.getWidth() / 2);
+								v.setLayoutParams(par);
+
+								break;
+
+							}// end of MotionEvent.ACTION_MOVE
+
+							case MotionEvent.ACTION_UP: {
+								par.y = (int) event.getRawY() - (v.getHeight());
+								par.x = (int) event.getRawX()
+										- (v.getWidth() / 2);
+								v.setLayoutParams(par);
+
+								if (mTextViewToDrag.getBottom() < 600) {
+									Intent mCallIntent = new Intent(
+											MyCabinet.this, NoteOrganizer.class);
+									Bundle mCallBundle = new Bundle();
+									mCallBundle.putInt("lastNoteIdC_key",
+											mCurrentNoteId);
+									mCallBundle.putString(
+											"dragTextStringC_key", mTextToDrag);
+									mCallIntent.putExtras(mCallBundle);
+									MyCabinet.this.finish();
+									startActivity(mCallIntent);
+
+								}
+								break;
+							}
+
+							case MotionEvent.ACTION_DOWN: {
+								par.y = (int) event.getRawY() - (v.getHeight());
+								par.x = (int) event.getRawX()
+										- (v.getWidth() / 2);
+								v.setLayoutParams(par);
+								break;
+							}
+
+							}// end of switch event.getAction
+						}// end of switch
+
+						return true;
+
+					}
+
+				});
+
+			}
+		}
+		});
+		// this image view is to close the cabinet activity
+
+	}
+
+	/*
+	 * this adapter will show the icons like save as ,switch icons in
+	 * placeholder
+	 */
+	public class ImageAdapterPlaceHoldForMyCabinet extends BaseAdapter {
+		public ImageAdapterPlaceHoldForMyCabinet(Context c) {
+			mContext = c;
+		}
+
+		public int getCount() {
+
+			return mThumbIds.length;
+
+		}
+
+		public Object getItem(int position) {
+
+			return position;
+		}
+
+		public long getItemId(int position) {
+
+			return position;
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ImageView imageView = new ImageView(mContext);
+
+			if (convertView == null) {
+				imageView = new ImageView(mContext);
+				imageView.setLayoutParams(new GridView.LayoutParams(26, 23));
+				imageView.setAdjustViewBounds(false);
+
+				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+			} else {
+				imageView = (ImageView) convertView;
+			}
+
+			imageView.setImageResource(mThumbIds[position]);
+
+			return imageView;
+		}
+
+		private Context mContext;
+		/* this array will store the below mentioned icons */
+		private Integer[] mThumbIds = { R.drawable.cabinetsearchicon,
+				R.drawable.cabinetsorticon, R.drawable.cabinetentersaveicon,
+				R.drawable.cabinetsendtoicon, R.drawable.cabinetorganizericon,
+				R.drawable.cabinetdeleteicon, R.drawable.switcher
+
+		};
+	}
+
+	/* this class is for saving the extracted note */
+	private class AdapterNoteSavingPlace extends BaseAdapter {
+		private LayoutInflater mInflater;
+		private Bitmap mIcon[];
+		private Bitmap mIcon1[];
+		final DataBaseClass mDb = new DataBaseClass(MyCabinet.this);
+
+		public AdapterNoteSavingPlace(Context context) {
+			/* this code is to added which item is checked after refresh */
+
+			int mIsCheckedInCabinet;
+
+			// Cache the LayoutInflate to avoid asking for a new one each time.
+			mInflater = LayoutInflater.from(context);
+			Bitmap[] mIcon1 = new Bitmap[mIndex];
+			// check box will not work when in place of cabinet note came
+
+			if (mRefreshCheckBox == REFRESH_CHECKBOK_POSSIBLE) {
+				for (int j = 0; j < mIndex; j++) {
+					mIsSelectInCabinet = mDb.isCheckedInCabinet(j);
+					mIsSelectInCabinet.moveToFirst();
+
+					mIsCheckedInCabinet = mIsSelectInCabinet.getInt(0);
+					// first check from database that data is selected or not
+					if (mIsCheckedInCabinet == 1) {
+						mIcon1[j] = BitmapFactory.decodeResource(context
+								.getResources(),
+								R.drawable.selectedcheckboxicon);
+					}
+					if (mIsCheckedInCabinet == 0) {
+						mIcon1[j] = BitmapFactory.decodeResource(context
+								.getResources(), R.drawable.checkbox);
+					}
+
+				}
+
+			}
+
+			mIcon = mIcon1;
+		}
+
+		public int getCount() {
+			return mIndex;
+
+		}
+
+		public Object getItem(int position) {
+			return position;
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			final ViewHolder holder;
+			final int mPosition = position;
+			if (convertView == null) {
+				convertView = mInflater.inflate(R.layout.checkboxtextbox, null);
+
+				holder = new ViewHolder();
+				holder.text = (TextView) convertView.findViewById(R.id.text);
+
+				holder.text.setPadding(10, 15, 0, 0);
+				holder.text.setTextColor(Color.BLACK);
+
+				holder.icon = (ImageView) convertView
+						.findViewById(R.id.iconforcheckbox);
+
+				holder.icon.setOnClickListener(new View.OnClickListener() {
+					// this code is to change the checkbox icon
+					public void onClick(View v) {
+
+						String mStopClick = mSetTextForCabinet.getText()
+								.toString();
+						if (mStopClick.equalsIgnoreCase("Cabinet")) {
+
+							Cursor mCheckCursor = mDb
+									.isCheckedInCabinet(mPosition);
+							mCheckCursor.moveToFirst();
+							int misChecked = mCheckCursor.getInt(0);
+							if (misChecked == 0) {
+								mDb.updateIsCheckedInCabinetToSet(mPosition);
+
+								holder.icon
+										.setBackgroundResource(R.drawable.selectedcheckboxicon);
+
+							}
+							if (misChecked == 1) {
+								mDb.updateIsCheckedInCabinetToUnSet(mPosition);
+
+								holder.icon
+										.setBackgroundResource(R.drawable.checkbox);
+
+							}
+							mCheckCursor.close();
+						}
+						/*if for showing the check box refresh the adapter*/ 
+						if (mCountCheck == false) {
+							mNoteSavingPlace
+							.setAdapter(new AdapterNoteSavingPlace(
+									MyCabinet.this));
+						}
+					
+							
+
+					}
+				});
+
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+
+			holder.text.setText(mSaveData[position]);
+			holder.text.setTextSize(15);
+			holder.text.setBackgroundColor(Color.WHITE);
+			if (mRefreshCheckBox == 1) {
+				holder.icon.setImageBitmap(mIcon[position]);
+			}
+			return convertView;
+		}
+
+		class ViewHolder {
+			TextView text;
+			ImageView icon;
+		}
+	}
+
+	/* this function is to show the cabinet in full screen mode */
+	public void fullScreen() {
+		Intent mIntentFullScreen = new Intent(MyCabinet.this, MyCabinet.class);
+		Bundle mBundleFullScreen = new Bundle();
+		mIntentFullScreen.putExtra("BookViewFullScreen", "CabinetOpen");
+		mCabinetText = mSetTextForCabinet.getText().toString();
+		if (mCabinetText.equalsIgnoreCase("Cabinet")) {
+			mIntentFullScreen.putExtra("selectedNoteId_key", 0);
+		} else
+			mIntentFullScreen.putExtra("selectedNoteId_key",
+					QuikE.mFromOrganizerNoteIdInCabinet);
+
+		startActivityForResult(mIntentFullScreen, 2);
+	}
+
+	/* This code is to return in home using H key from KeyBoard */
+	public boolean onKeyDown(int KeyCode, KeyEvent event) {
+		switch (KeyCode) {
+		case KeyEvent.KEYCODE_H:
+			/* finish the current activity */
+			finish();
+			/* start the home page */
+			startActivity(new Intent(MyCabinet.this, QuikE.class));
+			return true;
+		}
+		return false;
+
+	}
+
+}

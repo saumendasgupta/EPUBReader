@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout android:layout_width="fill_parent" 
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:id="@+id/mycabinetlayout" 
+	android:layout_gravity="bottom" android:layout_height="fill_parent">
+	
+
+  <RelativeLayout android:id="@+id/placeholerMyCabinet" 
+	android:layout_height="55dip" 
+	android:layout_width="fill_parent" 
+	android:layout_below="@+id/closefullscreen" 
+	android:background="@drawable/cabinetheaderstripe">
+<ImageView android:id="@+id/mycabinetimage" 
+android:background="@drawable/cabinetheadericon" 
+android:layout_height="30dip" 
+android:layout_width="30dip" 
+android:layout_marginLeft="12dip" 
+android:layout_marginTop="16dip">
+</ImageView>
+<TextView android:layout_width="wrap_content" 
+android:layout_height="wrap_content" 
+android:layout_marginLeft="45dip" 
+android:layout_marginTop="25dip"
+android:textColor="#ffffff" 
+android:id="@+id/cabinettext"
+>
+</TextView>
+<GridView android:id="@+id/gplageholederMyCabinet" 
+	android:numColumns="7" android:layout_height="fill_parent" 
+	android:layout_width="287dip" android:layout_marginLeft="185dip" 
+	android:columnWidth="30dip" android:paddingLeft="18dip"
+	android:horizontalSpacing="15dip"
+	android:layout_marginTop="15dip">
+</GridView>
+
+
+</RelativeLayout>
+
+<GridView android:layout_below="@id/placeholerMyCabinet" 
+android:id="@+id/mycabinetSavingPlace" 
+android:numColumns="2" 
+android:scrollbars="none" 
+android:columnWidth="130dip" 
+android:layout_width="fill_parent" 
+android:background="@drawable/cabinetfullscreengridbg" 
+android:layout_height="fill_parent">
+</GridView>
+
+</RelativeLayout>

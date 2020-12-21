@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:id="@+id/browserlayout"
+	android:visibility="visible" android:layout_height="fill_parent"
+	android:background="@drawable/bg">
+	<RelativeLayout android:layout_alignParentTop="true"
+		android:id="@+id/header"
+		android:background="@drawable/headerbar" 
+		android:layout_width="480dip" 
+		android:layout_height="30dip">
+		<ImageView android:id="@+id/headerhomeimage" 
+		android:background="@drawable/headerhomeicon" 
+		android:layout_height="22dip" 
+		android:layout_width="22dip" 
+		android:layout_marginLeft="8dip" 
+		android:layout_marginTop="4dip">
+		</ImageView>
+		<TextView android:layout_width="wrap_content" 
+		android:text="Browser" 
+		android:id="@+id/headertext" 
+		android:layout_height="30dip" 
+		android:layout_marginLeft="35dip" 
+		android:layout_marginTop="5dip" android:textStyle="bold"
+		android:textColor="#ffffff">
+		</TextView>
+		<ImageView android:background="@drawable/activewindowicon"
+			android:clickable="true" 
+			android:id="@+id/activewindow"
+			android:layout_height="14dip" 
+			android:layout_width="56dip" 
+			android:layout_marginLeft="210dip" 
+			android:layout_marginTop="16dip">
+		</ImageView>
+		
+
+		<ImageView android:layout_height="20dip" 
+	android:layout_width="22dip" 
+	android:layout_marginLeft="401dip" 
+	android:layout_marginTop="4dip" 
+	android:background="@drawable/headerwifiicon" 
+	android:id="@+id/headerwifiImage">
+		</ImageView>
+	<ImageView android:layout_width="36dip" 
+	android:layout_height="20dip" 
+	android:layout_marginLeft="436dip" 
+	android:layout_marginTop="5dip" 
+	android:background="@drawable/headerbatteryicon" 
+	android:id="@+id/batteryIconImage">
+	</ImageView>
+		
+	
+	<TextView android:layout_width="wrap_content" 
+android:layout_height="30dip" 
+android:text="06:30" 
+android:layout_marginLeft="325dip" 
+android:id="@+id/Time" 
+android:layout_marginTop="5dip" android:textStyle="bold" android:textColor="#ffffff">
+	</TextView>
+
+	</RelativeLayout>
+	
+	<RelativeLayout android:id="@+id/placeholder" 
+		android:layout_below="@+id/header" android:layout_height="47dip" 
+		android:background="@drawable/headericonsstripbg" android:layout_width="480dip">
+		<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/placehold" 
+			android:layout_width="fill_parent"
+			android:stretchMode="columnWidth" 
+			android:gravity="center"
+			android:layout_below="@+id/placeholder" 
+			android:layout_height="fill_parent"
+			android:scrollbars="none"
+			android:numColumns="6" android:columnWidth="33dip"></GridView>
+	</RelativeLayout>
+	
+	<RelativeLayout android:id="@+id/LayoutofSearchAddress" 
+	android:layout_below="@+id/placeholder" 
+	android:layout_width="fill_parent" 
+	android:layout_height="48dip"
+	android:background="@drawable/dictionarysearchbg">
+	
+			<EditText  
+		android:id="@+id/searchAddressEditText" 
+		android:layout_height="40dip" 
+		android:layout_width="390dip" 
+		android:layout_marginTop="5dip" 
+		android:layout_marginLeft="5dip"
+		android:drawableLeft="@drawable/searchicon">
+		</EditText>
+		
+		<ImageView android:id="@+id/FindAddress" 
+		android:layout_height="33dip" 
+		android:layout_width="33dip" 
+		android:layout_marginTop="8dip" 
+		android:background="@drawable/dictionarygoicon" 
+		android:layout_toRightOf="@id/searchAddressEditText">
+		</ImageView>
+<ImageView android:id="@+id/BrowserRefresh"
+  android:layout_width="33dip" android:layout_height="33dip"
+  android:layout_marginTop="8dip"
+  android:layout_toRightOf="@id/FindAddress"
+  android:layout_marginLeft="8dip"
+  android:background="@drawable/refreshicon">
+  </ImageView>
+</RelativeLayout>
+	<WebView android:id="@+id/browserShowingWebView" 
+	android:layout_below="@id/LayoutofSearchAddress" 
+	android:layout_height="675dip" 
+	android:layout_width="wrap_content"></WebView>
+</RelativeLayout>

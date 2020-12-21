@@ -1,0 +1,201 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:2:1-49:12
+	package
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:3:7-34
+		INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:5:7-32
+		INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:2:11-69
+	android:versionCode
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:4:7-30
+		INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:6:7-68
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:6:24-66
+application
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:7:5-46:19
+	android:label
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:7:69-101
+	android:icon
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:7:18-68
+activity#com.sdg.EPUBReader.EpubReader
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:8:9-14:20
+	android:label
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:9:19-51
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:8:64-128
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:8:19-63
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:10:13-13:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:11:17-69
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:11:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:12:17-77
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:12:27-74
+activity#com.sdg.DisplayManager.Display_Manager
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:15:9-139
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:15:73-137
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:15:19-72
+activity#com.sdg.EPUBReader.LibraryMainPage
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:16:3-129
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:16:63-127
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:16:13-62
+activity#com.sdg.EPUBReader.SettingChange
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:17:10-118
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:17:68-116
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:17:20-67
+activity#com.sdg.EPUBReader.ManageHome
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:18:10-115
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:18:65-113
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:18:20-64
+activity#com.sdg.EPUBReader.ActiveWindow
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:19:10-139
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:19:67-137
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:19:20-66
+activity#com.sdg.EPUBReader.LibraryMainPageList
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:20:10-140
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:20:74-138
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:20:20-73
+activity#com.sdg.EPUBReader.ListScroll
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:21:10-115
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:21:65-113
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:21:20-64
+activity#com.sdg.EPUBReader.MyCabinet
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:22:10-115
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:22:64-112
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:22:20-63
+activity#com.sdg.EPUBReader.TOC
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:23:4-112
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:23:52-110
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:23:14-51
+activity#com.sdg.EPUBReader.TocLayout
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:24:5-61
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:24:15-58
+activity#com.sdg.EPUBReader.Browser
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:25:6-125
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:25:58-122
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:25:16-57
+activity#com.sdg.EPUBReader.MyCabinetFullText
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:26:5-128
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:26:67-126
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:26:15-66
+activity#com.sdg.EPUBReader.Sharing
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:27:6-119
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:27:58-117
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:27:16-57
+activity#com.sdg.EPUBReader.SaveAsNote
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:28:5-133
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:28:60-130
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:28:15-59
+activity#com.sdg.Dictionary.Dictionary
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:30:6-134
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:30:61-131
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:30:16-60
+activity#com.sdg.EPUBReader.Annotation
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:31:6-122
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:31:61-120
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:31:16-60
+activity#com.sdg.EPUBReader.AnnotImage
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:32:6-122
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:32:61-120
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:32:16-60
+activity#com.sdg.organizer.Organizer
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:33:12-34:78
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:34:12-76
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:33:22-64
+activity#com.sdg.organizer.CategoryEdit
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:35:9-126
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:35:65-124
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:35:19-64
+activity#com.sdg.organizer.NoteOrganizer
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:36:3-37:72
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:37:6-70
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:36:13-59
+activity#com.sdg.organizer.NotesListScroll
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:38:3-39:67
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:39:6-65
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:38:13-61
+activity#com.sdg.organizer.CategoryList
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:40:3-41:67
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:41:6-65
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:40:13-58
+activity#com.sdg.organizer.MoveInfo
+ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:42:3-43:67
+	android:theme
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:43:6-65
+	android:name
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml:42:13-54
+uses-sdk
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ktmn87\Documents\QuikE\app\src\main\AndroidManifest.xml
